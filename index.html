@@ -225,7 +225,7 @@ function shell(inner) {
   ${topbar(S.cfg.org || '연수 전자서명', S.cfg.sub || '연수 참여 전자서명')}
   ${S.cfg.notice ? `<div class="notice"><div class="wrap">${esc(S.cfg.notice)}</div></div>` : ''}
   <main class="wrap">${inner}</main>
-  <footer class="wrap foot"><p class="maker">제작자 문의 · <a href="mailto:replay615@gmail.com">replay615@gmail.com</a></p><button class="lnk" data-act="adminLogin">관리자</button></footer>`;
+  <footer class="wrap foot"><p class="maker">제작자 문의 · <a class="mail" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=replay615@gmail.com&amp;su=%5B%EC%97%B0%EC%88%98%20%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%5D%20%EB%AC%B8%EC%9D%98" target="_blank" rel="noopener">replay615@gmail.com</a></p><button class="lnk" data-act="adminLogin">관리자</button></footer>`;
 }
 
 /* ───── 구성원 화면 ───── */
@@ -245,7 +245,7 @@ function renderSetup() {
   <label class="fld">배포 URL<input class="in" id="apiu" placeholder="https://script.google.com/macros/s/…/exec"></label>
   <small>입력한 주소는 이 기기에만 저장돼요</small>
   <button class="btn" style="margin-top:16px" data-act="connect">연결하기</button>
-  <button class="btn ghost" style="margin-top:10px" data-act="demoOn">배포 URL 없이 데모 체험하기</button><p class="maker" style="margin-top:26px;text-align:center">제작자 문의 · <a href="mailto:replay615@gmail.com">replay615@gmail.com</a></p></main>`);
+  <button class="btn ghost" style="margin-top:10px" data-act="demoOn">배포 URL 없이 데모 체험하기</button><p class="maker" style="margin-top:26px;text-align:center">제작자 문의 · <a class="mail" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=replay615@gmail.com&amp;su=%5B%EC%97%B0%EC%88%98%20%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%5D%20%EB%AC%B8%EC%9D%98" target="_blank" rel="noopener">replay615@gmail.com</a></p></main>`);
 }
 function renderPick() {
   S.t = null;
@@ -344,7 +344,7 @@ async function loadA() {
 const refresh = async () => { if (await loadA()) renderAdmin(); };
 function renderAdmin() {
   const tabs = [['trn', '연수'], ['mem', '구성원'], ['sig', '서명 현황'], ['qr', '공유 QR'], ['cfg', '설정']];
-  $('#admin').innerHTML = `<div class="abar"><div class="wrap wide"><div class="arow"><b>관리자 <small>(화면 v6 · 서버 ${A.ver ? 'v' + A.ver : '구버전 — 새 버전 배포 필요'})</small></b><button class="lnk" data-act="adminClose">닫기</button></div><nav class="tabs">${tabs.map(([k, n]) => `<button class="${k === aTab ? 'on' : ''}" data-act="tab" data-k="${k}">${n}</button>`).join('')}</nav></div></div>
+  $('#admin').innerHTML = `<div class="abar"><div class="wrap wide"><div class="arow"><b>관리자 <small>(화면 v7 · 서버 ${A.ver ? 'v' + A.ver : '구버전 — 새 버전 배포 필요'})</small></b><button class="lnk" data-act="adminClose">닫기</button></div><nav class="tabs">${tabs.map(([k, n]) => `<button class="${k === aTab ? 'on' : ''}" data-act="tab" data-k="${k}">${n}</button>`).join('')}</nav></div></div>
   <div class="wrap wide apage">${A.defaultPin ? '<div class="warn">기본 비밀번호(1234)를 쓰고 있어요. 설정 탭에서 바로 바꿔 주세요.</div>' : ''}<div id="ap"></div></div>`;
   ({ trn: tabTrn, mem: tabMem, sig: tabSig, qr: tabQr, cfg: tabCfg })[aTab]();
 }
@@ -568,6 +568,10 @@ const ACT = {
   sigSel(el) { sigT = el.value; tabSig(); }, delS, printOpt, printPrev, printNow,
   cpLink, saveQr, saveCfg, chPin
 };
+document.addEventListener('click', e => { // 휴대폰은 설치된 메일 앱(지메일)으로, 컴퓨터는 지메일 작성 창으로 열어요
+  const m = e.target.closest('a.mail');
+  if (m && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) { e.preventDefault(); location.href = 'mailto:replay615@gmail.com?subject=' + encodeURIComponent('[연수 전자서명] 문의'); }
+});
 document.addEventListener('click', e => { const el = e.target.closest('[data-act]'); if (el && ACT[el.dataset.act]) ACT[el.dataset.act](el, e); });
 document.addEventListener('change', e => { const el = e.target.closest('[data-chg]'); if (el && ACT[el.dataset.chg]) ACT[el.dataset.chg](el, e); });
 document.addEventListener('submit', e => { const f = e.target.closest('[data-submit]'); if (f && ACT[f.dataset.submit]) { e.preventDefault(); ACT[f.dataset.submit](f, e); } });
