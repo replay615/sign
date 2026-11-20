@@ -61,6 +61,8 @@ main.wrap{padding-bottom:20px}
 .row{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;text-align:left;padding:15px 16px;background:#fff;border:0;border-top:1px solid var(--line);cursor:pointer}
 .row:first-child{border-top:0}
 .row small{display:block}
+.row>span{flex:1;min-width:0}
+.row .note{margin-top:2px;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .row em{font-style:normal;font-size:13px;color:var(--mute);text-align:right;max-width:46%}
 .row em.go{color:var(--brand);font-weight:700}
 .row:disabled{cursor:default;background:#f7f8f7}
@@ -225,7 +227,7 @@ function shell(inner) {
   ${topbar(S.cfg.org || '연수 전자서명', S.cfg.sub || '연수 참여 전자서명')}
   ${S.cfg.notice ? `<div class="notice"><div class="wrap">${esc(S.cfg.notice)}</div></div>` : ''}
   <main class="wrap">${inner}</main>
-  <footer class="wrap foot"><p class="maker">제작자 문의 · <a class="mail" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=replay615@gmail.com&amp;su=%5B%EC%97%B0%EC%88%98%20%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%5D%20%EB%AC%B8%EC%9D%98" target="_blank" rel="noopener">replay615@gmail.com</a></p><button class="lnk" data-act="adminLogin">관리자</button></footer>`;
+  <footer class="wrap foot"><p class="maker">제작자 문의 · <a class="mail" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=replay615@gmail.com&amp;su=%5B%EC%97%B0%EC%88%98%20%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%5D%20%EB%AC%B8%EC%9D%98" target="_blank" rel="noopener">replay615@gmail.com</a></p>${TOKEN ? '' : '<button class="lnk" data-act="adminLogin">관리자</button>'}</footer>`;
 }
 
 /* ───── 구성원 화면 ───── */
@@ -247,14 +249,22 @@ function renderSetup() {
   <button class="btn" style="margin-top:16px" data-act="connect">연결하기</button>
   <button class="btn ghost" style="margin-top:10px" data-act="demoOn">배포 URL 없이 데모 체험하기</button><p class="maker" style="margin-top:26px;text-align:center">제작자 문의 · <a class="mail" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=replay615@gmail.com&amp;su=%5B%EC%97%B0%EC%88%98%20%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%5D%20%EB%AC%B8%EC%9D%98" target="_blank" rel="noopener">replay615@gmail.com</a></p></main>`);
 }
+/* 안내 문구는 한 줄로 짧게 (연도 생략) */
+function noteOf(t) {
+  const k = kst(), today = `${k.getUTCFullYear()}-${p2(k.getUTCMonth() + 1)}-${p2(k.getUTCDate())}`;
+  if (t.state === 'past') return '종료된 연수예요';
+  if (t.state === 'late') return '서명 시간이 끝났어요';
+  if (t.state === 'early') return t.date === today && t.from ? `${t.from}부터 서명할 수 있어요` : `${kd(t.date).replace(/^\d{4}년 /, '')}에 서명할 수 있어요`;
+  return '';
+}
 function renderPick() {
   S.t = null;
   const rows = S.trainings.map(t => {
     const dn = S.cfg.deviceLimit && localStorage.getItem('esign_done_' + t.id);
     const can = t.state === 'open' && !dn;
     const time = t.from || t.to ? ` · ${t.from || ''}~${t.to || ''}` : '';
-    const note = dn ? '이 기기에서 서명을 완료했어요' : t.state === 'open' ? '서명하기' : t.msg;
-    return `<button class="row" ${can ? '' : 'disabled'} data-act="pickT" data-id="${esc(t.id)}"><span><b>${esc(t.name)}</b><small>${esc(kd(t.date))}${esc(time)}</small></span><em class="${can ? 'go' : ''}">${esc(note)}</em></button>`;
+    const note = dn ? '이 기기에서 서명을 완료했어요' : noteOf(t);
+    return `<button class="row" ${can ? '' : 'disabled'} data-act="pickT" data-id="${esc(t.id)}"><span><b>${esc(t.name)}</b><small>${esc(kd(t.date))}${esc(time)}</small>${can ? '' : `<small class="note">${esc(note)}</small>`}</span>${can ? '<em class="go">서명하기</em>' : ''}</button>`;
   }).join('');
   view(shell(`<h2>어떤 연수에 서명하시겠어요?</h2>${rows ? `<div class="ledger">${rows}</div>` : '<p class="empty">지금 서명할 수 있는 연수가 없어요.<br>연수 날짜와 시간을 확인해 주세요.</p>'}`));
 }
@@ -344,7 +354,7 @@ async function loadA() {
 const refresh = async () => { if (await loadA()) renderAdmin(); };
 function renderAdmin() {
   const tabs = [['trn', '연수'], ['mem', '구성원'], ['sig', '서명 현황'], ['qr', '공유 QR'], ['cfg', '설정']];
-  $('#admin').innerHTML = `<div class="abar"><div class="wrap wide"><div class="arow"><b>관리자 <small>(화면 v7 · 서버 ${A.ver ? 'v' + A.ver : '구버전 — 새 버전 배포 필요'})</small></b><button class="lnk" data-act="adminClose">닫기</button></div><nav class="tabs">${tabs.map(([k, n]) => `<button class="${k === aTab ? 'on' : ''}" data-act="tab" data-k="${k}">${n}</button>`).join('')}</nav></div></div>
+  $('#admin').innerHTML = `<div class="abar"><div class="wrap wide"><div class="arow"><b>관리자 <small>(화면 v9 · 서버 ${A.ver ? 'v' + A.ver : '구버전 — 새 버전 배포 필요'})</small></b><button class="lnk" data-act="adminClose">닫기</button></div><nav class="tabs">${tabs.map(([k, n]) => `<button class="${k === aTab ? 'on' : ''}" data-act="tab" data-k="${k}">${n}</button>`).join('')}</nav></div></div>
   <div class="wrap wide apage">${A.defaultPin ? '<div class="warn">기본 비밀번호(1234)를 쓰고 있어요. 설정 탭에서 바로 바꿔 주세요.</div>' : ''}<div id="ap"></div></div>`;
   ({ trn: tabTrn, mem: tabMem, sig: tabSig, qr: tabQr, cfg: tabCfg })[aTab]();
 }
