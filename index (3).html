@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1d4e5f">
+<title>연수 전자서명</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+:root{--brand:#1d4e5f;--ink:#17212b;--mute:#66727c;--line:#d5dbd8;--bg:#eef1ef;--bad:#b3402f;--tint:color-mix(in srgb,var(--brand) 9%,#fff)}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{font:15px/1.55 Pretendard,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;color:var(--ink);background:var(--bg);-webkit-text-size-adjust:100%}
+body.lock{overflow:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid color-mix(in srgb,var(--brand) 45%,#fff);outline-offset:2px}
+h2{font-size:21px;line-height:1.35;margin:26px 0 14px;letter-spacing:-.01em}
+h2 small{font-size:14px;color:var(--mute);font-weight:500}
+h3{font-size:16px;margin:22px 0 8px}
+small{color:var(--mute);font-size:13px}
+.mute{color:var(--mute);margin:4px 0 12px}
+.wrap{max-width:480px;margin:0 auto;padding:0 18px}
+.wrap.wide{max-width:960px}
+main.wrap{padding-bottom:20px}
+.top{background:var(--brand);color:#fff;padding:calc(24px + env(safe-area-inset-top)) 0 22px}
+.top .org{font-size:23px;font-weight:800;letter-spacing:-.02em}
+.top .sub{opacity:.85;margin-top:2px}
+.notice{background:var(--tint);border-bottom:1px solid var(--line);padding:12px 0;font-size:14px;white-space:pre-line}
+.demo{background:#fff3cd;color:#5c4400;font-size:13px;text-align:center;padding:6px}
+.foot{padding-top:6px;padding-bottom:calc(30px + env(safe-area-inset-bottom));text-align:center}
+.lnk{background:none;border:0;padding:6px;color:var(--mute);text-decoration:underline;cursor:pointer;font-size:13px}
+.lnk.back{color:var(--brand);text-decoration:none;font-size:14px;margin:16px 0 0 -6px}
+.lnk.bad{color:var(--bad);display:block;margin:14px auto 0}
+.btn{display:block;width:100%;padding:14px;border:0;border-radius:10px;background:var(--brand);color:#fff;font-weight:700;cursor:pointer;text-align:center}
+.btn.ghost{background:#fff;color:var(--brand);border:1px solid var(--line)}
+.btn.sm{display:inline-block;width:auto;padding:8px 14px;font-size:14px}
+.btn:disabled{opacity:.4;cursor:default}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.arow{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ledger{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;text-align:left;padding:15px 16px;background:#fff;border:0;border-top:1px solid var(--line);cursor:pointer}
+.row:first-child{border-top:0}
+.row small{display:block}
+.row em{font-style:normal;font-size:13px;color:var(--mute);text-align:right;max-width:46%}
+.row em.go{color:var(--brand);font-weight:700}
+.row:disabled{cursor:default;background:#f7f8f7}
+.row:disabled b{color:var(--mute)}
+.empty{text-align:center;color:var(--mute);padding:40px 0;line-height:1.7}
+.sel{border-left:4px solid var(--brand);padding:2px 0 2px 12px;margin:18px 0 6px}
+.sel small{display:block}
+.sel b{font-size:18px}
+.fld{display:block;margin:16px 0 0;font-weight:600;font-size:14px}
+.fld small{font-weight:400}
+.in,select{display:block;width:100%;margin-top:6px;padding:12px;border:1px solid #b9c2be;border-radius:10px;background:#fff;font-weight:400}
+textarea.in{resize:vertical}
+input[type=color]{display:block;margin-top:6px;width:64px;height:40px;border:1px solid #b9c2be;border-radius:8px;padding:2px;background:#fff}
+#goSign{margin-top:26px}
+.padbox{position:relative;height:250px;background:#fff;border:1.5px solid var(--ink);border-radius:4px;margin:16px 0 0}
+.padbox canvas{display:block;width:100%;height:100%;touch-action:none}
+.padbox::before{content:'×';position:absolute;left:14px;bottom:62px;font-size:22px;line-height:1;color:var(--mute);pointer-events:none}
+.padbox i{position:absolute;left:14px;right:14px;bottom:62px;border-top:1px solid #9aa6a1;pointer-events:none}
+.padbox .hint{position:absolute;inset:0;display:grid;place-items:center;color:#9aa6a1;pointer-events:none;padding-bottom:40px}
+.ok{width:76px;height:76px;margin:46px auto 8px;display:block}
+.center{text-align:center}
+.center h2{margin-top:6px}
+.box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:14px 0}
+.box .fld:first-child{margin-top:0}
+.box .btn{margin-top:14px}
+.seg{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.seg label{display:flex;gap:6px;align-items:center;padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;font-weight:500;cursor:pointer}
+.seg.col{flex-direction:column;align-items:stretch}
+.seg.col label{border-radius:10px;flex-wrap:wrap}
+.chk{display:flex;align-items:center;gap:8px;padding:6px 0;font-weight:500}
+.grp{margin:12px 0}
+.grp>b{display:block;font-size:14px;color:var(--brand);margin-bottom:2px}
+.grp .chk{display:inline-flex;margin-right:14px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;background:#fff;border:1px solid var(--line);border-radius:999px;font-size:14px}
+.chip button{border:0;background:none;color:var(--mute);cursor:pointer;font-size:16px;padding:0 2px}
+.warn{background:#fdecea;color:#7a2216;border:1px solid #f0b7ae;border-radius:10px;padding:10px 14px;margin-top:16px;font-size:14px}
+.stat{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:16px;margin:4px 0 8px}
+.stat b{font-size:30px;color:var(--brand)}
+.stat span{color:var(--mute)}
+.stat .btn{margin-left:auto}
+.tbl{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:10px}
+.tbl td{padding:6px 10px;border-top:1px solid var(--line);font-size:14px}
+.thumb{height:34px;display:block}
+.abar{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line);z-index:2;padding-top:env(safe-area-inset-top)}
+.abar .arow{padding:10px 0 2px}
+.tabs{display:flex;gap:2px;overflow-x:auto}
+.tabs button{border:0;background:none;padding:10px 14px;font-weight:600;color:var(--mute);border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
+.tabs button.on{color:var(--brand);border-color:var(--brand)}
+.apage{padding-bottom:60px}
+#admin{position:fixed;inset:0;background:var(--bg);overflow:auto;z-index:20}
+.qrbox{display:grid;place-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px;margin-bottom:14px}
+#qr img,#qr canvas{display:block}
+.mask{position:fixed;inset:0;background:rgba(15,25,30,.5);display:flex;align-items:flex-end;justify-content:center;z-index:50}
+.modal{background:#fff;width:100%;max-width:520px;max-height:92vh;overflow:auto;padding:20px 20px calc(20px + env(safe-area-inset-bottom));border-radius:16px 16px 0 0}
+.modal.wide{max-width:900px}
+.modal h3{margin-top:0;font-size:18px}
+@media(min-width:600px){.mask{align-items:center}.modal{border-radius:14px}}
+#toast{position:fixed;left:50%;bottom:calc(28px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#17212b;color:#fff;padding:10px 16px;border-radius:999px;font-size:14px;z-index:99;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;text-align:center}
+#toast.on{opacity:1}
+.prev{background:#cfd6d3;padding:12px;overflow:auto;max-height:62vh;border-radius:8px}
+.boot{text-align:center;color:var(--mute);padding:90px 0}
+/* 서명등록부 (화면 미리보기 + A4 인쇄 공용) */
+.sheet{background:#fff;color:#000;width:186mm;margin:0 auto;font-family:Pretendard,"Malgun Gothic",sans-serif}
+.sheet h1{font-size:12pt;font-weight:500;text-align:center;margin:0}
+.sheet h2{font-size:18pt;text-align:center;margin:2mm 0 4mm;letter-spacing:0}
+.sheet p{font-size:10pt;margin:0 0 3mm;text-align:right}
+.sheet table{width:100%;border-collapse:collapse;table-layout:fixed}
+.sheet th,.sheet td{border:.3mm solid #000;padding:0 1mm;height:11mm;font-size:10pt;text-align:center;overflow:hidden;line-height:1.15}
+.sheet th{height:8mm;background:#eee;font-weight:600}
+.sheet tr{break-inside:avoid}
+.sheet thead{display:table-header-group}
+.sheet .n{width:8mm;font-size:8.5pt;color:#444}
+.sheet .d{width:40mm}.sheet .m{width:36mm}
+.sheet.cols2 .d,.sheet.cols2 .m{width:20mm}
+.sheet.cols3 .n{width:7mm}.sheet.cols3 .d,.sheet.cols3 .m{width:15mm}
+.sheet.cols3 td{font-size:9pt;height:10.5mm}
+.sheet .sg img{max-width:100%;max-height:9.5mm;display:block;margin:0 auto}
+#printRoot{display:none}
+@media print{
+  @page{size:A4;margin:12mm}
+  body{background:#fff}
+  body.printing>*:not(#printRoot){display:none!important}
+  body.printing #printRoot{display:block}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="admin" hidden></div>
+<div id="modal"></div>
+<div id="printRoot"></div>
+<div id="toast" role="status"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+'use strict';
+/* ▼ Apps Script 웹 앱 URL(…/exec)을 따옴표 안에 붙여넣으면 모든 구성원이 별도 설정 없이 QR로 접속해요 */
+const API_URL = 'https://script.google.com/macros/s/AKfycbwFrmSj8tVLWvU5aBvFwBuu7wCPZNgs7zL0ixq9HlmfCS7a04rhx6zecJ0YlJjSsZBuxQ/exec';
+
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const p2 = n => String(n).padStart(2, '0');
+const ymd = d => `${d.getFullYear()}-${p2(d.getMonth() + 1)}-${p2(d.getDate())}`;
+const hm = d => `${p2(d.getHours())}:${p2(d.getMinutes())}`;
+const rank = m => m.dept === '교장' ? 0 : m.dept === '교감' ? 1 : 2; // 가나다순 출력 시 교장·교감 먼저
+/* 부서·이름은 등록한 순서(엑셀 순서) 그대로 정렬해요 */
+function deptSort(list) {
+  const first = new Map(), idx = new Map();
+  A.members.forEach((m, i) => { if (!first.has(m.dept)) first.set(m.dept, i); idx.set(m.id, i); });
+  return list.sort((a, b) => first.get(a.dept) - first.get(b.dept) || idx.get(a.id) - idx.get(b.id));
+}
+
+const qs = new URLSearchParams(location.search);
+const TOKEN = qs.get('t') || '';
+let API = API_URL || localStorage.getItem('esign_api') || '';
+let DEMO = sessionStorage.getItem('esign_demo') === '1';
+const S = { cfg: {}, trainings: [], members: [], t: null, dept: '', mid: '', pin: '' };
+let A = null, aTab = 'trn', pad = null, sigT = '', lastSheet = '';
+
+/* ───── 통신 ───── */
+async function api(action, data = {}) {
+  if (DEMO) return demo(action, data);
+  try {
+    const r = await fetch(API, { method: 'POST', body: JSON.stringify({ action, ...data }) });
+    return await r.json();
+  } catch (e) {
+    return { ok: false, err: 'net', msg: '서버에 연결할 수 없어요. 인터넷 연결과 배포 URL을 확인해 주세요.' };
+  }
+}
+
+/* ───── 공통 UI ───── */
+let tt;
+function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), 2600); }
+function view(h) { $('#app').innerHTML = h; scrollTo(0, 0); }
+function modal(h, wide) { $('#modal').innerHTML = `<div class="mask" data-act="mMask"><div class="modal ${wide ? 'wide' : ''}" role="dialog" aria-modal="true">${h}</div></div>`; document.body.classList.add('lock'); }
+function closeModal() { $('#modal').innerHTML = ''; if ($('#admin').hidden) document.body.classList.remove('lock'); }
+function applyTheme() {
+  document.documentElement.style.setProperty('--brand', S.cfg.color || '#1d4e5f');
+  document.title = (S.cfg.org ? S.cfg.org + ' · ' : '') + '연수 전자서명';
+}
+function shell(inner) {
+  return `${DEMO ? '<div class="demo">데모 모드 · 이 브라우저에만 저장돼요 <button class="lnk" data-act="demoOff">끝내기</button></div>' : ''}
+  <div class="top"><div class="wrap"><div class="org">${esc(S.cfg.org || '연수 전자서명')}</div><div class="sub">${esc(S.cfg.sub || '연수 참여 전자서명')}</div></div></div>
+  ${S.cfg.notice ? `<div class="notice"><div class="wrap">${esc(S.cfg.notice)}</div></div>` : ''}
+  <main class="wrap">${inner}</main>
+  <footer class="wrap foot"><button class="lnk" data-act="adminLogin">관리자</button></footer>`;
+}
+
+/* ───── 구성원 화면 ───── */
+async function start() {
+  if (!API && !DEMO) return renderSetup();
+  view('<div class="boot">불러오는 중…</div>');
+  const r = await api('init', { token: TOKEN });
+  if (!r.ok) return view(shell(`<p class="empty">${esc(r.msg || '불러오지 못했어요.')}</p><button class="btn" data-act="retry">다시 시도</button>`));
+  S.cfg = r.cfg; applyTheme();
+  if (!r.tokenOk) return view(shell(`<div class="center"><h2>이 QR/링크는 만료됐어요</h2><p class="mute">이 기관은 미참석자의 원격 서명을 막기 위해<br>공유 QR/링크를 매일 새로 만들어요.<br>오늘 새로 공유된 QR로 다시 접속해 주세요.</p></div>`));
+  S.trainings = r.trainings; S.members = r.members; renderPick();
+}
+function renderSetup() {
+  view(`<div class="top"><div class="wrap"><div class="org">연수 전자서명</div><div class="sub">QR 찍고, 서명하면 끝</div></div></div>
+  <main class="wrap"><h2>시스템 연결이 필요해요</h2>
+  <p class="mute">관리자에게 받은 접속 링크로 들어오시거나, 아래에 웹 앱 배포 URL을 입력해 주세요.</p>
+  <label class="fld">배포 URL<input class="in" id="apiu" placeholder="https://script.google.com/macros/s/…/exec"></label>
+  <small>입력한 주소는 이 기기에만 저장돼요</small>
+  <button class="btn" style="margin-top:16px" data-act="connect">연결하기</button>
+  <button class="btn ghost" style="margin-top:10px" data-act="demoOn">배포 URL 없이 데모 체험하기</button></main>`);
+}
+function renderPick() {
+  S.t = null;
+  const rows = S.trainings.map(t => {
+    const dn = S.cfg.deviceLimit && localStorage.getItem('esign_done_' + t.id);
+    const can = t.state === 'open' && !dn;
+    const time = t.from || t.to ? ` · ${t.from || ''}~${t.to || ''}` : '';
+    const note = dn ? '이 기기에서 서명을 완료했어요' : t.state === 'open' ? '서명하기' : t.msg;
+    return `<button class="row" ${can ? '' : 'disabled'} data-act="pickT" data-id="${esc(t.id)}"><span><b>${esc(t.name)}</b><small>${esc(t.date)}${esc(time)}</small></span><em class="${can ? 'go' : ''}">${esc(note)}</em></button>`;
+  }).join('');
+  view(shell(`<h2>어떤 연수에 서명하시겠어요?</h2>${rows ? `<div class="ledger">${rows}</div>` : '<p class="empty">지금 서명할 수 있는 연수가 없어요.<br>연수 날짜와 시간을 확인해 주세요.</p>'}`));
+}
+function renderWho() {
+  const t = S.t, set = new Set(t.ids), done = new Set(t.done);
+  const ms = S.members.filter(m => set.has(m.id));
+  const depts = [...new Set(ms.map(m => m.dept))];
+  const names = ms.filter(m => m.dept === S.dept).sort((a, b) => a.name.localeCompare(b.name, 'ko'));
+  view(shell(`<button class="lnk back" data-act="toPick">← 연수 목록</button>
+  <div class="sel"><small>선택한 연수</small><b>${esc(t.name)}</b></div>
+  <label class="fld">부서<select data-chg="deptChg"><option value="">부서를 선택해 주세요</option>${depts.map(d => `<option ${d === S.dept ? 'selected' : ''}>${esc(d)}</option>`).join('')}</select></label>
+  <label class="fld">성명<select data-chg="nameChg" ${S.dept ? '' : 'disabled'}><option value="">${S.dept ? '성명을 선택해 주세요' : '부서를 먼저 선택해 주세요'}</option>${names.map(m => `<option value="${esc(m.id)}" ${done.has(m.id) ? 'disabled' : ''} ${m.id === S.mid ? 'selected' : ''}>${esc(m.name)}${done.has(m.id) ? ' (서명 완료)' : ''}</option>`).join('')}</select></label>
+  <button class="btn" id="goSign" data-act="toSign" ${S.mid ? '' : 'disabled'}>서명하러 가기</button>`));
+}
+function renderSign() {
+  const m = S.members.find(x => x.id === S.mid);
+  view(shell(`<button class="lnk back" data-act="toWho">← 본인 선택</button>
+  <div class="sel"><small>${esc(S.t.name)}</small><b>${esc(m.dept)} ${esc(m.name)}</b></div>
+  <div class="padbox"><canvas id="pad"></canvas><i></i><span class="hint" id="hint">손가락이나 펜으로 서명해 주세요</span></div>
+  <div class="two"><button class="btn ghost" data-act="padClear">다시 쓰기</button><button class="btn" id="submit" data-act="submit">서명 제출하기</button></div>`));
+  padInit();
+}
+function padInit() {
+  const c = $('#pad'), dpr = Math.min(devicePixelRatio || 1, 2), r = c.getBoundingClientRect();
+  c.width = r.width * dpr; c.height = r.height * dpr;
+  const g = c.getContext('2d');
+  g.scale(dpr, dpr); g.lineWidth = 2.8; g.lineCap = g.lineJoin = 'round'; g.strokeStyle = '#111';
+  let down = false, last = [0, 0], n = 0;
+  const pos = e => { const b = c.getBoundingClientRect(); return [e.clientX - b.left, e.clientY - b.top]; };
+  c.onpointerdown = e => {
+    e.preventDefault(); c.setPointerCapture(e.pointerId); down = true; last = pos(e);
+    g.beginPath(); g.moveTo(last[0], last[1]); g.lineTo(last[0] + .1, last[1] + .1); g.stroke(); n++;
+    $('#hint').hidden = true;
+  };
+  c.onpointermove = e => { if (!down) return; const p = pos(e); g.beginPath(); g.moveTo(last[0], last[1]); g.lineTo(p[0], p[1]); g.stroke(); last = p; n++; };
+  c.onpointerup = c.onpointercancel = () => { down = false; };
+  pad = {
+    empty: () => n < 8,
+    clear() { g.clearRect(0, 0, r.width, r.height); n = 0; $('#hint').hidden = false; },
+    data() {
+      for (const w of [360, 260, 180]) {
+        const o = document.createElement('canvas'); o.width = w; o.height = Math.round(w * c.height / c.width);
+        o.getContext('2d').drawImage(c, 0, 0, o.width, o.height);
+        const u = o.toDataURL('image/png'); if (u.length < 40000) return u;
+      }
+      return '';
+    }
+  };
+}
+async function submit() {
+  if (pad.empty()) return toast('서명을 먼저 해 주세요.');
+  const b = $('#submit'); b.disabled = true; b.textContent = '제출하는 중…';
+  const r = await api('sign', { token: TOKEN, trainingId: S.t.id, memberId: S.mid, img: pad.data() });
+  if (r.ok) { localStorage.setItem('esign_done_' + S.t.id, '1'); return renderDone(); }
+  b.disabled = false; b.textContent = '서명 제출하기';
+  if (['dup', 'closed', 'expired', 'target'].includes(r.err)) {
+    view(shell(`<div class="center"><h2>서명할 수 없어요</h2><p class="mute">${esc(r.msg)}</p></div><button class="btn" data-act="retry">확인</button>`));
+  } else toast(r.msg || '오류가 발생했어요. 잠시 후 다시 시도해 주세요.');
+}
+function renderDone() {
+  const m = S.members.find(x => x.id === S.mid);
+  view(shell(`<svg class="ok" viewBox="0 0 76 76" aria-hidden="true"><circle cx="38" cy="38" r="35" fill="none" stroke="var(--brand)" stroke-width="3"/><path d="M23 39l10 10 20-22" fill="none" stroke="var(--brand)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="center"><h2>서명 완료!</h2><p class="mute">${esc(m.dept)} ${esc(m.name)}님의 참여 기록이<br>${esc(S.t.name)}에 접수되었어요.</p></div>
+  <button class="btn" data-act="retry">다른 연수 서명하기</button>`));
+}
+
+/* ───── 관리자 ───── */
+function adminLogin() {
+  modal(`<h3>관리자 확인</h3><p class="mute">관리자 비밀번호를 입력해 주세요.</p><input id="pin" class="in" type="password" autocomplete="current-password"><div class="two"><button class="btn ghost" data-act="mClose">취소</button><button class="btn" data-act="doLogin">확인</button></div>`);
+  setTimeout(() => { const e = $('#pin'); if (e) e.focus(); }, 60);
+}
+async function doLogin() {
+  const pin = $('#pin').value, r = await api('login', { pin });
+  if (!r.ok) return toast(r.msg || '비밀번호가 맞지 않아요.');
+  S.pin = pin; closeModal();
+  if (await loadA()) { $('#admin').hidden = false; document.body.classList.add('lock'); renderAdmin(); }
+}
+async function loadA() {
+  const r = await api('load', { pin: S.pin });
+  if (!r.ok) { toast(r.msg || '불러오지 못했어요.'); return false; }
+  A = r; return true;
+}
+const refresh = async () => { if (await loadA()) renderAdmin(); };
+function renderAdmin() {
+  const tabs = [['trn', '연수'], ['mem', '구성원'], ['sig', '서명 현황'], ['qr', '공유 QR'], ['cfg', '설정']];
+  $('#admin').innerHTML = `<div class="abar"><div class="wrap wide"><div class="arow"><b>관리자</b><button class="lnk" data-act="adminClose">닫기</button></div><nav class="tabs">${tabs.map(([k, n]) => `<button class="${k === aTab ? 'on' : ''}" data-act="tab" data-k="${k}">${n}</button>`).join('')}</nav></div></div>
+  <div class="wrap wide apage">${A.defaultPin ? '<div class="warn">기본 비밀번호(1234)를 쓰고 있어요. 설정 탭에서 바로 바꿔 주세요.</div>' : ''}<div id="ap"></div></div>`;
+  ({ trn: tabTrn, mem: tabMem, sig: tabSig, qr: tabQr, cfg: tabCfg })[aTab]();
+}
+const tgtLabel = t => t.target === 'all' ? '전 구성원' : t.target === 'dept' ? `부서 ${t.targetIds.length}개` : `개인 ${t.targetIds.length}명`;
+
+function tabTrn() {
+  const n = t => A.signs.filter(s => s.trainingId === t.id).length;
+  const list = [...A.trainings].sort((a, b) => b.date.localeCompare(a.date));
+  $('#ap').innerHTML = `<div class="arow"><h2>연수</h2><button class="btn sm" data-act="editT" data-id="">+ 새 연수</button></div>
+  ${list.length ? `<div class="ledger">${list.map(t => `<button class="row" data-act="editT" data-id="${esc(t.id)}"><span><b>${esc(t.name)}</b><small>${esc(t.date)}${t.from || t.to ? ` · ${esc(t.from)}~${esc(t.to)}` : ''} · ${tgtLabel(t)}</small></span><em>${n(t)}/${t.ids.length}명</em></button>`).join('')}</div>` : '<p class="empty">등록된 연수가 없어요.<br>새 연수를 추가해 주세요.</p>'}`;
+}
+function editT(el) {
+  const t = A.trainings.find(x => x.id === el.dataset.id) || { id: '', name: '', date: ymd(new Date()), target: 'all', targetIds: [], from: '', to: '' };
+  const depts = [...new Set(A.members.map(m => m.dept))];
+  const none = '<small>먼저 구성원을 등록해 주세요.</small>';
+  modal(`<h3>${t.id ? '연수 수정' : '새 연수 추가'}</h3>
+  <label class="fld">연수명<input class="in" id="tn" value="${esc(t.name)}" maxlength="60"></label>
+  <label class="fld">연수 날짜<input class="in" id="td" type="date" value="${esc(t.date)}"></label>
+  <div class="fld">서명 가능 시간 <small>(선택 · 비우면 하루 종일)</small><div class="two" style="margin-top:6px"><input class="in" id="tf" type="time" value="${esc(t.from)}" style="margin:0"><input class="in" id="tt" type="time" value="${esc(t.to)}" style="margin:0"></div></div>
+  <div class="fld">연수 대상<div class="seg">${[['all', '전 구성원'], ['dept', '부서 선택'], ['person', '개별 선택']].map(([v, l]) => `<label><input type="radio" name="tg" value="${v}" data-chg="tgChg" ${t.target === v ? 'checked' : ''}>${l}</label>`).join('')}</div></div>
+  <div id="tgDept" class="box" hidden>${depts.map(d => `<label class="chk"><input type="checkbox" class="dchk" value="${esc(d)}" ${t.target === 'dept' && t.targetIds.includes(d) ? 'checked' : ''}>${esc(d)}</label>`).join('') || none}</div>
+  <div id="tgPerson" class="box" hidden>${depts.map(d => `<div class="grp"><b>${esc(d)}</b>${A.members.filter(m => m.dept === d).map(m => `<label class="chk"><input type="checkbox" class="pchk" value="${esc(m.id)}" ${t.target === 'person' && t.targetIds.includes(m.id) ? 'checked' : ''}>${esc(m.name)}</label>`).join('')}</div>`).join('') || none}</div>
+  <div class="two"><button class="btn ghost" data-act="mClose">닫기</button><button class="btn" data-act="saveT" data-id="${esc(t.id)}">저장하기</button></div>
+  ${t.id ? `<button class="lnk bad" data-act="delT" data-id="${esc(t.id)}">이 연수 삭제</button>` : ''}`);
+  tgChg();
+}
+function tgChg() { const v = $('input[name=tg]:checked').value; $('#tgDept').hidden = v !== 'dept'; $('#tgPerson').hidden = v !== 'person'; }
+async function saveT(el) {
+  const target = $('input[name=tg]:checked').value;
+  const targetIds = target === 'dept' ? $$('.dchk:checked').map(x => x.value) : target === 'person' ? $$('.pchk:checked').map(x => x.value) : [];
+  const t = { id: el.dataset.id, name: $('#tn').value.trim(), date: $('#td').value, from: $('#tf').value, to: $('#tt').value, target, targetIds };
+  if (!t.name || !t.date) return toast('연수명과 날짜를 입력해 주세요.');
+  if (target !== 'all' && !targetIds.length) return toast('대상을 한 명 이상 선택해 주세요.');
+  if (t.from && t.to && t.from >= t.to) return toast('종료 시간은 시작 시간보다 늦어야 해요.');
+  const r = await api('saveTraining', { pin: S.pin, t });
+  if (!r.ok) return toast(r.msg || '저장하지 못했어요.');
+  closeModal(); toast('저장했어요.'); refresh();
+}
+async function delT(el) {
+  if (!confirm('이 연수와 서명 기록이 모두 삭제돼요. 삭제할까요?')) return;
+  const r = await api('delTraining', { pin: S.pin, id: el.dataset.id });
+  if (!r.ok) return toast(r.msg); closeModal(); refresh();
+}
+
+function tabMem() {
+  const depts = [...new Set(A.members.map(m => m.dept))];
+  $('#ap').innerHTML = `<h2>구성원 <small>${A.members.length}명</small></h2>
+  <div class="box"><label class="fld">부서<input class="in" id="md" maxlength="30" list="dl"><datalist id="dl">${depts.map(d => `<option value="${esc(d)}">`).join('')}</datalist></label>
+  <label class="fld">성명 <small>(여러 명은 줄바꿈이나 쉼표로 구분)</small><textarea class="in" id="mn" rows="3"></textarea></label>
+  <button class="btn sm" data-act="addM">구성원 추가</button></div>
+  <div class="box"><b>엑셀로 일괄 등록</b><p class="mute">A열 부서, B열 성명으로 적어 올려 주세요. 첫 줄이 ‘부서·성명’이면 제목으로 보고 건너뛰어요. CSV는 UTF-8로 저장해 주세요.</p>
+  <div class="arow" style="justify-content:flex-start"><label class="btn sm ghost">파일 선택<input type="file" accept=".xlsx,.xls,.csv" data-chg="xlsx" hidden></label><button class="btn sm ghost" data-act="tpl">엑셀 양식 받기</button></div></div>
+  ${depts.map(d => `<div class="grp"><b>${esc(d)}</b><div class="chips">${A.members.filter(m => m.dept === d).map(m => `<span class="chip">${esc(m.name)}<button data-act="delM" data-id="${esc(m.id)}" aria-label="${esc(m.name)} 삭제">×</button></span>`).join('')}</div></div>`).join('') || '<p class="empty">아직 구성원이 없어요.</p>'}`;
+}
+async function addList(list) {
+  if (!list.length) return toast('등록할 구성원이 없어요.');
+  const r = await api('addMembers', { pin: S.pin, list });
+  if (!r.ok) return toast(r.msg);
+  toast(`${r.added}명을 추가했어요.`); refresh();
+}
+function addM() {
+  const dept = $('#md').value.trim();
+  const list = $('#mn').value.split(/[\n,]+/).map(s => s.trim()).filter(Boolean).map(name => ({ dept, name }));
+  if (!dept) return toast('부서를 입력해 주세요.');
+  addList(list);
+}
+async function xlsx(el) {
+  const f = el.files[0]; if (!f) return;
+  if (typeof XLSX === 'undefined') return toast('엑셀 읽기 도구를 불러오지 못했어요.');
+  try {
+    const wb = XLSX.read(await f.arrayBuffer(), { type: 'array' });
+    const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1, defval: '' });
+    let list = rows.map(r => ({ dept: String(r[0]).trim(), name: String(r[1]).trim() })).filter(x => x.dept && x.name);
+    if (list.length && list[0].dept === '부서' && list[0].name === '성명') list.shift();
+    if (list.length && confirm(`${list.length}명을 등록할까요? (이미 있는 사람은 건너뛰어요)`)) addList(list);
+    else if (!list.length) toast('읽을 수 있는 구성원이 없어요.');
+  } catch (e) { toast('파일을 읽지 못했어요.'); }
+  el.value = '';
+}
+function tpl() {
+  if (typeof XLSX === 'undefined') return toast('엑셀 도구를 불러오지 못했어요.');
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([['부서', '성명'], ['교무부', '홍길동'], ['교무부', '김철수'], ['행정실', '이영희']]), '구성원');
+  XLSX.writeFile(wb, '구성원_양식.xlsx');
+}
+async function delM(el) {
+  if (!confirm('이 구성원과 서명 기록을 삭제할까요?')) return;
+  const r = await api('delMember', { pin: S.pin, id: el.dataset.id });
+  if (!r.ok) return toast(r.msg); refresh();
+}
+
+async function tabSig() {
+  const ts = [...A.trainings].sort((a, b) => b.date.localeCompare(a.date));
+  if (!ts.length) { $('#ap').innerHTML = '<h2>서명 현황</h2><p class="empty">먼저 연수를 등록해 주세요.</p>'; return; }
+  if (!ts.find(t => t.id === sigT)) sigT = (ts.find(t => t.date <= ymd(new Date())) || ts[ts.length - 1]).id;
+  const t = ts.find(x => x.id === sigT);
+  $('#ap').innerHTML = `<h2>서명 현황</h2><select data-chg="sigSel">${ts.map(x => `<option value="${esc(x.id)}" ${x.id === sigT ? 'selected' : ''}>${esc(x.date)} ${esc(x.name)}</option>`).join('')}</select><div id="sigBody"><p class="mute">불러오는 중…</p></div>`;
+  const r = await api('getSigns', { pin: S.pin, trainingId: sigT });
+  if (!r.ok) return toast(r.msg);
+  A.cur = r.signs;
+  const by = new Map(r.signs.map(s => [s.memberId, s]));
+  const ms = deptSort(A.members.filter(m => t.ids.includes(m.id)));
+  const signed = ms.filter(m => by.has(m.id)), un = ms.filter(m => !by.has(m.id));
+  $('#sigBody').innerHTML = `<div class="stat"><b>${signed.length}</b>/ ${ms.length}명 서명 <span>(${ms.length ? Math.round(signed.length / ms.length * 100) : 0}%)</span><button class="btn sm" data-act="printOpt">서명등록부 출력</button></div>
+  <h3>미서명 ${un.length}명</h3><div class="chips">${un.map(m => `<span class="chip">${esc(m.dept)} ${esc(m.name)}</span>`).join('') || '<small>대상자 모두 서명했어요.</small>'}</div>
+  <h3>서명 완료 ${signed.length}명</h3>${signed.length ? `<table class="tbl"><tbody>${signed.map(m => { const s = by.get(m.id); return `<tr><td>${esc(m.dept)}</td><td>${esc(m.name)}</td><td><img class="thumb" src="${esc(s.img)}" alt="서명"></td><td>${esc(s.at.slice(5, 16))}</td><td><button class="lnk bad" style="margin:0" data-act="delS" data-id="${esc(s.id)}">삭제</button></td></tr>`; }).join('')}</tbody></table>` : '<small>아직 서명한 사람이 없어요.</small>'}`;
+}
+async function delS(el) {
+  if (!confirm('이 서명을 삭제할까요? 본인이 다시 서명할 수 있게 돼요.')) return;
+  const r = await api('delSign', { pin: S.pin, id: el.dataset.id });
+  if (!r.ok) return toast(r.msg); refresh();
+}
+function printOpt() {
+  const seg = (name, items, def) => `<div class="seg">${items.map(([v, l]) => `<label><input type="radio" name="${name}" value="${v}" ${v === def ? 'checked' : ''}>${l}</label>`).join('')}</div>`;
+  modal(`<h3>서명등록부 출력</h3>
+  <div class="fld">표 열 수${seg('pc', [[1, '1열'], [2, '2열'], [3, '3열']], 2)}</div>
+  <div class="fld">정렬${seg('ps', [['dept', '등록 순서대로 (부서별)'], ['name', '교장·교감 먼저, 이름 가나다순']], 'dept')}</div>
+  <div class="fld">서명률 표시${seg('pr', [['1', '포함'], ['0', '미포함']], '1')}</div>
+  <div class="two"><button class="btn ghost" data-act="mClose">취소</button><button class="btn" data-act="printPrev">미리보기</button></div>`);
+}
+function printPrev() {
+  const t = A.trainings.find(x => x.id === sigT);
+  const cols = +$('input[name=pc]:checked').value, sort = $('input[name=ps]:checked').value, rate = $('input[name=pr]:checked').value === '1';
+  const by = new Map(A.cur.map(s => [s.memberId, s]));
+  const base = A.members.filter(m => t.ids.includes(m.id));
+  const ms = sort === 'dept' ? deptSort(base) : base.sort((a, b) => rank(a) - rank(b) || a.name.localeCompare(b.name, 'ko'));
+  const rows = Math.max(1, Math.ceil(ms.length / cols));
+  let body = '';
+  for (let r = 0; r < rows; r++) {
+    body += '<tr>';
+    for (let c = 0; c < cols; c++) {
+      const i = c * rows + r, m = ms[i];
+      if (!m) { body += '<td></td><td></td><td></td><td></td>'; continue; }
+      const s = by.get(m.id);
+      body += `<td class="n">${i + 1}</td><td>${esc(m.dept)}</td><td>${esc(m.name)}</td><td class="sg">${s ? `<img src="${esc(s.img)}" alt="">` : ''}</td>`;
+    }
+    body += '</tr>';
+  }
+  const head = '<th class="n">번호</th><th class="d">부서</th><th class="m">성명</th><th>서명</th>'.repeat(cols);
+  const done = ms.filter(m => by.has(m.id)).length;
+  lastSheet = `<div class="sheet cols${cols}"><h1>${esc(A.cfg.org)}</h1><h2>${esc(t.name)} 서명등록부</h2>
+  <p>일시: ${esc(t.date)}${t.from || t.to ? ` ${esc(t.from)}~${esc(t.to)}` : ''} &nbsp; 대상: ${ms.length}명${rate ? ` &nbsp; 서명: ${done}명 (${ms.length ? Math.round(done / ms.length * 100) : 0}%)` : ''}</p>
+  <table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+  const z = Math.min(1, (innerWidth - 56) / 704);
+  modal(`<h3>서명등록부 미리보기</h3><div class="prev"><div style="zoom:${z}">${lastSheet}</div></div>
+  <div class="two"><button class="btn ghost" data-act="mClose">닫기</button><button class="btn" data-act="printNow">인쇄하기 / PDF 저장</button></div>`, true);
+}
+function printNow() { $('#printRoot').innerHTML = lastSheet; document.body.classList.add('printing'); window.print(); }
+addEventListener('afterprint', () => { document.body.classList.remove('printing'); $('#printRoot').innerHTML = ''; });
+
+function qrUrl() {
+  const k = A.cfg.qrMode === 'daily' ? A.tokens.daily : A.tokens.fixed;
+  return `${location.origin === 'null' || location.protocol === 'file:' ? location.href.split(/[?#]/)[0] : location.origin + location.pathname}?t=${k}`;
+}
+function tabQr() {
+  const url = qrUrl(), daily = A.cfg.qrMode === 'daily';
+  $('#ap').innerHTML = `<h2>공유 QR</h2><p class="mute">${daily ? '매일 자정에 새 QR로 바뀌어요. 연수 당일 아침 이 화면에서 새 QR을 공유해 주세요.' : '항상 같은 QR이에요. 대리 서명이 걱정되면 설정에서 ‘매일 바뀌는 QR’을 선택해 주세요.'}${DEMO ? ' (데모 모드의 링크는 이 브라우저에서만 쓸 수 있어요.)' : ''}</p>
+  <div class="qrbox"><div id="qr"></div></div><input class="in" id="lk" readonly value="${esc(url)}" style="margin:0 0 4px">
+  <div class="two"><button class="btn ghost" data-act="cpLink">링크 복사</button><button class="btn" data-act="saveQr">이미지 저장</button></div>`;
+  if (typeof QRCode === 'undefined') $('#qr').textContent = 'QR 도구를 불러오지 못했어요. 링크를 복사해서 공유해 주세요.';
+  else new QRCode($('#qr'), { text: url, width: 260, height: 260, correctLevel: QRCode.CorrectLevel.M });
+}
+async function cpLink() {
+  const v = $('#lk').value;
+  try { await navigator.clipboard.writeText(v); } catch (e) { $('#lk').select(); document.execCommand('copy'); }
+  toast('링크를 복사했어요.');
+}
+function saveQr() {
+  const c = $('#qr canvas'), i = $('#qr img'), src = c ? c.toDataURL('image/png') : i && i.src;
+  if (!src) return toast('QR 이미지를 만들지 못했어요.');
+  const a = document.createElement('a'); a.href = src; a.download = '연수서명_QR.png'; a.click();
+}
+function tabCfg() {
+  const c = A.cfg;
+  $('#ap').innerHTML = `<h2>설정</h2><div class="box">
+  <label class="fld">기관명<input class="in" id="co" value="${esc(c.org)}" maxlength="40"></label>
+  <label class="fld">부제목 <small>(선택)</small><input class="in" id="cs" value="${esc(c.sub)}" maxlength="40" placeholder="연수 참여 전자서명"></label>
+  <label class="fld">안내문 <small>(선택 · 서명 화면 위에 표시)</small><textarea class="in" id="cn" rows="2" maxlength="200">${esc(c.notice)}</textarea></label>
+  <label class="fld">대표 색상<input type="color" id="cc" value="${esc(c.color)}"></label>
+  <div class="fld">공유 QR 방식<div class="seg col">
+  <label><input type="radio" name="qm" value="fixed" ${c.qrMode !== 'daily' ? 'checked' : ''}>항상 같은 QR <small>한 번 공유하면 계속 사용해요</small></label>
+  <label><input type="radio" name="qm" value="daily" ${c.qrMode === 'daily' ? 'checked' : ''}>매일 바뀌는 QR <small>어제 받은 QR로는 서명할 수 없어 대리 서명을 막아요</small></label></div></div>
+  <label class="chk" style="margin-top:12px"><input type="checkbox" id="cd" ${c.deviceLimit ? 'checked' : ''}>한 기기에서는 연수당 한 번만 서명</label>
+  <small>현관 태블릿처럼 한 기기를 여럿이 쓰면 꺼 주세요.</small>
+  <button class="btn" data-act="saveCfg">저장하기</button></div>
+  <div class="box"><b>관리자 비밀번호 변경</b><input class="in" id="np" type="password" placeholder="새 비밀번호 (4자 이상)" autocomplete="new-password"><button class="btn sm" data-act="chPin" style="margin-top:12px">변경하기</button></div>
+  ${DEMO ? '<div class="box"><button class="btn sm ghost" data-act="demoReset">데모 데이터 처음으로 되돌리기</button></div>' : (!API_URL ? '<div class="box"><button class="btn sm ghost" data-act="chApi">다른 배포 URL로 연결 변경</button></div>' : '')}`;
+}
+async function saveCfg() {
+  const cfg = { org: $('#co').value.trim(), sub: $('#cs').value.trim(), notice: $('#cn').value.trim(), color: $('#cc').value, qrMode: $('input[name=qm]:checked').value, deviceLimit: $('#cd').checked };
+  if (!cfg.org) return toast('기관명을 입력해 주세요.');
+  const r = await api('saveCfg', { pin: S.pin, cfg });
+  if (!r.ok) return toast(r.msg);
+  S.cfg = { ...S.cfg, ...cfg }; applyTheme(); toast('저장했어요.'); refresh();
+}
+async function chPin() {
+  const np = $('#np').value;
+  if (np.length < 4) return toast('비밀번호는 4자 이상으로 정해 주세요.');
+  const r = await api('setPin', { pin: S.pin, newPin: np });
+  if (!r.ok) return toast(r.msg);
+  S.pin = np; toast('비밀번호를 바꿨어요.'); refresh();
+}
+function adminClose() { $('#admin').hidden = true; $('#admin').innerHTML = ''; document.body.classList.remove('lock'); S.pin = ''; A = null; start(); }
+
+/* ───── 이벤트 ───── */
+const ACT = {
+  retry: start,
+  connect() { const u = $('#apiu').value.trim(); if (!/^https:\/\/script\.google\.com\/.+\/exec$/.test(u)) return toast('…/exec 로 끝나는 웹 앱 URL을 입력해 주세요.'); localStorage.setItem('esign_api', u); API = u; start(); },
+  demoOn() { sessionStorage.setItem('esign_demo', '1'); DEMO = true; start(); },
+  demoOff() { sessionStorage.removeItem('esign_demo'); DEMO = false; start(); },
+  demoReset() { if (confirm('데모 데이터를 처음 상태로 되돌릴까요?')) { localStorage.removeItem(DK); refresh(); } },
+  chApi() { localStorage.removeItem('esign_api'); location.reload(); },
+  pickT(el) { S.t = S.trainings.find(t => t.id === el.dataset.id); S.dept = ''; S.mid = ''; renderWho(); },
+  toPick: renderPick, toWho: renderWho, toSign: renderSign,
+  deptChg(el) { S.dept = el.value; S.mid = ''; renderWho(); },
+  nameChg(el) { S.mid = el.value; $('#goSign').disabled = !S.mid; },
+  padClear() { pad.clear(); }, submit,
+  adminLogin, doLogin, adminClose,
+  mClose: closeModal, mMask(el, e) { if (e.target === el) closeModal(); },
+  tab(el) { aTab = el.dataset.k; renderAdmin(); },
+  editT, tgChg, saveT, delT, addM, xlsx, tpl, delM,
+  sigSel(el) { sigT = el.value; tabSig(); }, delS, printOpt, printPrev, printNow,
+  cpLink, saveQr, saveCfg, chPin
+};
+document.addEventListener('click', e => { const el = e.target.closest('[data-act]'); if (el && ACT[el.dataset.act]) ACT[el.dataset.act](el, e); });
+document.addEventListener('change', e => { const el = e.target.closest('[data-chg]'); if (el && ACT[el.dataset.chg]) ACT[el.dataset.chg](el, e); });
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.id === 'pin') doLogin(); if (e.key === 'Escape' && $('#modal').innerHTML) closeModal(); });
+
+/* ───── 데모 백엔드 (이 브라우저의 localStorage에만 저장) ───── */
+const DK = 'esign_demo_v1';
+const dput = d => localStorage.setItem(DK, JSON.stringify(d));
+function dget() {
+  let d = JSON.parse(localStorage.getItem(DK) || 'null');
+  if (!d) {
+    const g = { 교무부: ['김교무', '이학사', '박교육', '정기획'], 학생부: ['최생활', '강지도', '윤상담'], 특수교육: ['한특수', '오직업', '서자립', '문통합'], 행정실: ['임행정', '조회계'] };
+    const members = []; let i = 0;
+    for (const dept in g) g[dept].forEach(name => members.push({ id: 'm' + (++i), dept, name }));
+    d = { cfg: { org: '서산중앙고등학교', sub: '', notice: '', color: '#1d4e5f', qrMode: 'fixed', deviceLimit: false }, members, trainings: [{ id: 't1', name: '교직원 정보보안 연수', date: ymd(new Date()), target: 'all', targetIds: [], from: '', to: '' }], signs: [], pin: '1234' };
+    dput(d);
+  }
+  return d;
+}
+async function demo(a, q) {
+  const d = dget(), now = new Date(), today = ymd(now), tm = hm(now);
+  const ok = o => ({ ok: true, ...o }), no = (err, msg) => ({ ok: false, err, msg });
+  const ids = t => d.members.filter(m => t.target === 'all' || (t.target === 'dept' && t.targetIds.includes(m.dept)) || (t.target === 'person' && t.targetIds.includes(m.id))).map(m => m.id);
+  const st = t => t.date < today ? ['past', '종료된 연수예요'] : t.date > today ? ['early', t.date + '에 서명할 수 있어요'] : t.from && tm < t.from ? ['early', t.from + '부터 서명할 수 있어요'] : t.to && tm > t.to ? ['late', '서명 시간이 끝났어요'] : ['open', ''];
+  const day = n => ymd(new Date(now.getTime() + n * 864e5)), uid = () => Math.random().toString(36).slice(2, 10);
+  if (a === 'init') {
+    const c = d.cfg;
+    return ok({
+      tokenOk: true, cfg: { org: c.org, sub: c.sub, notice: c.notice, color: c.color, deviceLimit: c.deviceLimit }, members: d.members,
+      trainings: d.trainings.filter(t => t.date >= day(-3) && t.date <= day(30)).map(t => { const s = st(t); return { id: t.id, name: t.name, date: t.date, from: t.from, to: t.to, state: s[0], msg: s[1], ids: ids(t), done: d.signs.filter(x => x.trainingId === t.id).map(x => x.memberId) }; })
+        .sort((x, y) => (x.state === 'open' ? 0 : 1) - (y.state === 'open' ? 0 : 1) || x.date.localeCompare(y.date))
+    });
+  }
+  if (a === 'sign') {
+    const t = d.trainings.find(x => x.id === q.trainingId);
+    if (!t) return no('nf', '연수를 찾을 수 없어요.');
+    const s = st(t); if (s[0] !== 'open') return no('closed', s[1]);
+    if (!ids(t).includes(q.memberId)) return no('target', '이 연수의 대상자가 아니에요.');
+    if (d.signs.some(x => x.trainingId === t.id && x.memberId === q.memberId)) return no('dup', '이미 서명한 연수예요.');
+    d.signs.push({ id: uid(), trainingId: t.id, memberId: q.memberId, at: `${today} ${tm}:00`, img: q.img }); dput(d); return ok();
+  }
+  if (q.pin !== d.pin) return no('pin', '비밀번호가 맞지 않아요.');
+  switch (a) {
+    case 'login': return ok();
+    case 'load': return ok({ cfg: d.cfg, defaultPin: d.pin === '1234', tokens: { fixed: 'demo', daily: 'demo' }, members: d.members, trainings: d.trainings.map(t => ({ ...t, ids: ids(t) })), signs: d.signs.map(({ img, ...s }) => s) });
+    case 'getSigns': return ok({ signs: d.signs.filter(s => s.trainingId === q.trainingId) });
+    case 'saveTraining': { const t = { ...q.t }, i = d.trainings.findIndex(x => x.id === t.id); if (i >= 0) d.trainings[i] = t; else { t.id = uid(); d.trainings.push(t); } break; }
+    case 'delTraining': d.trainings = d.trainings.filter(t => t.id !== q.id); d.signs = d.signs.filter(s => s.trainingId !== q.id); break;
+    case 'addMembers': { let n = 0; q.list.forEach(m => { if (!d.members.some(x => x.dept === m.dept && x.name === m.name)) { d.members.push({ id: uid(), dept: m.dept, name: m.name }); n++; } }); dput(d); return ok({ added: n }); }
+    case 'delMember': d.members = d.members.filter(m => m.id !== q.id); d.signs = d.signs.filter(s => s.memberId !== q.id); break;
+    case 'delSign': d.signs = d.signs.filter(s => s.id !== q.id); break;
+    case 'saveCfg': Object.assign(d.cfg, q.cfg); break;
+    case 'setPin': d.pin = q.newPin; break;
+    default: return no('action', '알 수 없는 요청이에요.');
+  }
+  dput(d); return ok();
+}
+
+start();
+</script>
+</body>
+</html>
