@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1d4e5f">
+<title>연수 전자서명</title>
+<link rel="icon" href="data:image/png;base64,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">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+:root{--brand:#1d4e5f;--ink:#17212b;--mute:#66727c;--line:#d5dbd8;--bg:#eef1ef;--bad:#b3402f;--tint:color-mix(in srgb,var(--brand) 9%,#fff)}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{font:15px/1.55 Pretendard,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;color:var(--ink);background:var(--bg);-webkit-text-size-adjust:100%}
+body.lock{overflow:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid color-mix(in srgb,var(--brand) 45%,#fff);outline-offset:2px}
+h2{font-size:21px;line-height:1.35;margin:26px 0 14px;letter-spacing:-.01em}
+h2 small{font-size:14px;color:var(--mute);font-weight:500}
+h3{font-size:16px;margin:22px 0 8px}
+small{color:var(--mute);font-size:13px}
+.mute{color:var(--mute);margin:4px 0 12px}
+.wrap{max-width:480px;margin:0 auto;padding:0 18px}
+.wrap.wide{max-width:960px}
+main.wrap{padding-bottom:20px}
+.top{background:var(--brand);color:#fff;padding:calc(18px + env(safe-area-inset-top)) 0 18px}
+.hd{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.logo{height:48px;width:auto;flex:none}
+.top .org{font-size:21px;font-weight:800;letter-spacing:-.02em;line-height:1.25}
+.top .sub{opacity:.85;margin-top:2px;font-size:14px}
+.clock{flex:none;text-align:right;line-height:1.35;white-space:nowrap}
+.clock .cd{font-size:12.5px;opacity:.92}
+.clock .ct{font-size:15px;font-weight:700;font-variant-numeric:tabular-nums}
+@media(max-width:380px){.top .org{font-size:18px}.logo{height:40px}.clock .cd{font-size:11.5px}.clock .ct{font-size:13.5px}}
+.maker{margin:0 0 6px;font-size:13px;color:var(--mute)}
+.maker a{color:var(--brand);font-weight:600}
+.srow{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#fff;border-top:1px solid var(--line)}
+.srow:first-child{border-top:0}
+.who{flex:1;min-width:0}
+.who b{display:block}
+.who small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.when{font-size:12px;color:var(--mute);white-space:nowrap;text-align:right}
+.srow .lnk{margin:0;padding:6px 4px}
+.chip b{font-weight:600}
+.chip small{color:var(--mute)}
+.notice{background:var(--tint);border-bottom:1px solid var(--line);padding:12px 0;font-size:14px;white-space:pre-line}
+.demo{background:#fff3cd;color:#5c4400;font-size:13px;text-align:center;padding:6px}
+.foot{padding-top:6px;padding-bottom:calc(30px + env(safe-area-inset-bottom));text-align:center}
+.lnk{background:none;border:0;padding:6px;color:var(--mute);text-decoration:underline;cursor:pointer;font-size:13px}
+.lnk.back{color:var(--brand);text-decoration:none;font-size:14px;margin:16px 0 0 -6px}
+.lnk.bad{color:var(--bad);display:block;margin:14px auto 0}
+.btn{display:block;width:100%;padding:14px;border:0;border-radius:10px;background:var(--brand);color:#fff;font-weight:700;cursor:pointer;text-align:center}
+.btn.ghost{background:#fff;color:var(--brand);border:1px solid var(--line)}
+.btn.sm{display:inline-block;width:auto;padding:8px 14px;font-size:14px}
+.btn:disabled{opacity:.4;cursor:default}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.arow{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ledger{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;text-align:left;padding:15px 16px;background:#fff;border:0;border-top:1px solid var(--line);cursor:pointer}
+.row:first-child{border-top:0}
+.row small{display:block}
+.row em{font-style:normal;font-size:13px;color:var(--mute);text-align:right;max-width:46%}
+.row em.go{color:var(--brand);font-weight:700}
+.row:disabled{cursor:default;background:#f7f8f7}
+.row:disabled b{color:var(--mute)}
+.empty{text-align:center;color:var(--mute);padding:40px 0;line-height:1.7}
+.sel{border-left:4px solid var(--brand);padding:2px 0 2px 12px;margin:18px 0 6px}
+.sel small{display:block}
+.sel b{font-size:18px}
+.fld{display:block;margin:16px 0 0;font-weight:600;font-size:14px}
+.fld small{font-weight:400}
+.in,select{display:block;width:100%;margin-top:6px;padding:12px;border:1px solid #b9c2be;border-radius:10px;background:#fff;font-weight:400}
+textarea.in{resize:vertical}
+input[type=color]{display:block;margin-top:6px;width:64px;height:40px;border:1px solid #b9c2be;border-radius:8px;padding:2px;background:#fff}
+#goSign{margin-top:26px}
+.padbox{position:relative;height:250px;background:#fff;border:1.5px solid var(--ink);border-radius:4px;margin:16px 0 0}
+.padbox canvas{display:block;width:100%;height:100%;touch-action:none}
+.padbox::before{content:'×';position:absolute;left:14px;bottom:62px;font-size:22px;line-height:1;color:var(--mute);pointer-events:none}
+.padbox i{position:absolute;left:14px;right:14px;bottom:62px;border-top:1px solid #9aa6a1;pointer-events:none}
+.padbox .hint{position:absolute;inset:0;display:grid;place-items:center;color:#9aa6a1;pointer-events:none;padding-bottom:40px}
+.ok{width:76px;height:76px;margin:46px auto 8px;display:block}
+.center{text-align:center}
+.center h2{margin-top:6px}
+.box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:14px 0}
+.box .fld:first-child{margin-top:0}
+.box .btn{margin-top:14px}
+.seg{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.seg label{display:flex;gap:6px;align-items:center;padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;font-weight:500;cursor:pointer}
+.seg.col{flex-direction:column;align-items:stretch}
+.seg.col label{border-radius:10px;flex-wrap:wrap}
+.chk{display:flex;align-items:center;gap:8px;padding:6px 0;font-weight:500}
+.grp{margin:12px 0}
+.grp>b{display:block;font-size:14px;color:var(--brand);margin-bottom:2px}
+.grp .chk{display:inline-flex;margin-right:14px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;background:#fff;border:1px solid var(--line);border-radius:999px;font-size:14px}
+.chip button{border:0;background:none;color:var(--mute);cursor:pointer;font-size:16px;padding:0 2px}
+.warn{background:#fdecea;color:#7a2216;border:1px solid #f0b7ae;border-radius:10px;padding:10px 14px;margin-top:16px;font-size:14px}
+.stat{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:16px;margin:4px 0 8px}
+.stat b{font-size:30px;color:var(--brand)}
+.stat span{color:var(--mute)}
+.stat .btn{margin-left:auto}
+.tbl{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:10px}
+.tbl td{padding:6px 10px;border-top:1px solid var(--line);font-size:14px}
+.thumb{height:34px;display:block}
+.abar{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line);z-index:2;padding-top:env(safe-area-inset-top)}
+.abar .arow{padding:10px 0 2px}
+.tabs{display:flex;gap:2px;overflow-x:auto}
+.tabs button{border:0;background:none;padding:10px 14px;font-weight:600;color:var(--mute);border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
+.tabs button.on{color:var(--brand);border-color:var(--brand)}
+.apage{padding-bottom:60px}
+#admin{position:fixed;inset:0;background:var(--bg);overflow:auto;z-index:20}
+.qrbox{display:grid;place-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px;margin-bottom:14px}
+#qr img,#qr canvas{display:block}
+.mask{position:fixed;inset:0;background:rgba(15,25,30,.5);display:flex;align-items:flex-end;justify-content:center;z-index:50}
+.modal{background:#fff;width:100%;max-width:520px;max-height:92vh;overflow:auto;padding:20px 20px calc(20px + env(safe-area-inset-bottom));border-radius:16px 16px 0 0}
+.modal.wide{max-width:900px}
+.modal h3{margin-top:0;font-size:18px}
+@media(min-width:600px){.mask{align-items:center}.modal{border-radius:14px}}
+#toast{position:fixed;left:50%;bottom:calc(28px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#17212b;color:#fff;padding:10px 16px;border-radius:999px;font-size:14px;z-index:99;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;text-align:center}
+#toast.on{opacity:1}
+.prev{background:#cfd6d3;padding:12px;overflow:auto;max-height:62vh;border-radius:8px}
+.boot{text-align:center;color:var(--mute);padding:90px 0}
+/* 서명등록부 (화면 미리보기 + A4 인쇄 공용) */
+.sheet{background:#fff;color:#000;width:186mm;margin:0 auto;font-family:Pretendard,"Malgun Gothic",sans-serif}
+.sheet h1{font-size:12pt;font-weight:500;display:flex;align-items:center;justify-content:center;gap:2mm;margin:0}
+.sheet h1 img{height:8mm;width:auto}
+.sheet h2{font-size:18pt;text-align:center;margin:2mm 0 4mm;letter-spacing:0}
+.sheet p{font-size:10pt;margin:0 0 3mm;text-align:right}
+.sheet table{width:100%;border-collapse:collapse;table-layout:fixed}
+.sheet th,.sheet td{border:.3mm solid #000;padding:0 1mm;height:11mm;font-size:10pt;text-align:center;overflow:hidden;line-height:1.15}
+.sheet th{height:8mm;background:#eee;font-weight:600}
+.sheet tr{break-inside:avoid}
+.sheet thead{display:table-header-group}
+.sheet .n{width:8mm;font-size:8.5pt;color:#444}
+.sheet .m{width:28mm}.sheet .d{width:40mm;white-space:nowrap}
+.sheet td.d.long{font-size:8pt;letter-spacing:-.02em}
+.sheet.cols2 .m{width:18mm}.sheet.cols2 .d{width:24mm}
+.sheet.cols3 .n{width:7mm}.sheet.cols3 .m{width:14mm}.sheet.cols3 .d{width:20mm}
+.sheet.cols3 td.d.long{font-size:7.5pt}
+.sheet.cols3 td{font-size:9pt;height:10.5mm}
+.sheet .sg img{max-width:100%;max-height:9.5mm;display:block;margin:0 auto}
+#printRoot{display:none}
+@media print{
+  @page{size:A4;margin:12mm}
+  body{background:#fff}
+  body.printing>*:not(#printRoot){display:none!important}
+  body.printing #printRoot{display:block}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="admin" hidden></div>
+<div id="modal"></div>
+<div id="printRoot"></div>
+<div id="toast" role="status"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+'use strict';
+/* ▼ Apps Script 웹 앱 URL(…/exec)을 따옴표 안에 붙여넣으면 모든 구성원이 별도 설정 없이 QR로 접속해요 */
+const API_URL = 'https://script.google.com/macros/s/AKfycbywMubRYFDRlhPdVVb2XpR1XakAfSzicKVFLYeqkZKj32xmag7L0P5QbOgN54RBrT-ecw/exec';
+
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const p2 = n => String(n).padStart(2, '0');
+const ymd = d => `${d.getFullYear()}-${p2(d.getMonth() + 1)}-${p2(d.getDate())}`;
+const hm = d => `${p2(d.getHours())}:${p2(d.getMinutes())}`;
+const kst = () => new Date(Date.now() + 9 * 36e5);
+const nd = s => { s = String(s || ''); if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s; const d = new Date(s); if (isNaN(d)) return s; const k = new Date(d.getTime() + 9 * 36e5); return `${k.getUTCFullYear()}-${p2(k.getUTCMonth() + 1)}-${p2(k.getUTCDate())}`; };
+const nt = s => { s = String(s || ''); if (/^\d{2}:\d{2}$/.test(s)) return s; const m = /(\d{2}):(\d{2}):\d{2}/.exec(s); return m ? `${m[1]}:${m[2]}` : ''; };
+const na = s => { s = String(s || ''); if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}/.test(s)) return s; const d = new Date(s); if (isNaN(d)) return s; const k = new Date(d.getTime() + 9 * 36e5); return `${nd(s)} ${p2(k.getUTCHours())}:${p2(k.getUTCMinutes())}:${p2(k.getUTCSeconds())}`; };
+const kd = s => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(nd(s)); return m ? `${m[1]}년 ${+m[2]}월 ${+m[3]}일(${'일월화수목금토'[new Date(+m[1], m[2] - 1, +m[3]).getDay()]})` : String(s || ''); };
+const kt = s => { const m = /^\d{4}-(\d{2})-(\d{2}) (\d{2}:\d{2})/.exec(na(s)); return m ? `${+m[1]}월 ${+m[2]}일 ${m[3]}` : ''; };
+const normT = t => ({ ...t, date: nd(t.date), from: nt(t.from), to: nt(t.to) });
+function tick() {
+  const k = kst(), cd = $('.clock .cd'), ct = $('.clock .ct'); if (!cd) return;
+  let hr = k.getUTCHours(); const ap = hr < 12 ? '오전' : '오후'; hr = hr % 12 || 12;
+  cd.textContent = `${k.getUTCFullYear()}년 ${k.getUTCMonth() + 1}월 ${k.getUTCDate()}일(${'일월화수목금토'[k.getUTCDay()]})`;
+  ct.textContent = `${ap} ${hr}:${p2(k.getUTCMinutes())}:${p2(k.getUTCSeconds())}`;
+}
+const LOGO = 'data:image/png;base64,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';
+const topbar = (org, sub) => `<div class="top"><div class="wrap"><div class="hd"><div class="brand"><img class="logo" src="${LOGO}" alt=""><div><div class="org">${esc(org)}</div><div class="sub">${esc(sub)}</div></div></div><div class="clock"><div class="cd"></div><div class="ct"></div></div></div></div></div>`;
+const drank = d => d === '교장' ? 0 : d === '교감' ? 1 : 2;
+const topFirst = a => [...a].sort((x, y) => drank(x) - drank(y)); // 교장 → 교감 → 나머지(등록 순서)
+const rank = m => m.dept === '교장' ? 0 : m.dept === '교감' ? 1 : 2; // 가나다순 출력 시 교장·교감 먼저
+/* 교장 → 교감 → 나머지는 이름 가나다순 */
+const nameSort = list => list.sort((a, b) => rank(a) - rank(b) || a.name.localeCompare(b.name, 'ko'));
+
+const qs = new URLSearchParams(location.search);
+const TOKEN = qs.get('t') || '';
+let API = API_URL || localStorage.getItem('esign_api') || '';
+let DEMO = sessionStorage.getItem('esign_demo') === '1';
+const S = { cfg: {}, trainings: [], members: [], t: null, dept: '', mid: '', pin: '' };
+let A = null, aTab = 'trn', pad = null, sigT = '', lastSheet = '';
+
+/* ───── 통신 ───── */
+async function api(action, data = {}) {
+  if (DEMO) return demo(action, data);
+  try {
+    const r = await fetch(API, { method: 'POST', body: JSON.stringify({ action, ...data }) });
+    return await r.json();
+  } catch (e) {
+    return { ok: false, err: 'net', msg: '서버에 연결할 수 없어요. 인터넷 연결과 배포 URL을 확인해 주세요.' };
+  }
+}
+
+/* ───── 공통 UI ───── */
+let tt;
+function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), 2600); }
+function view(h) { $('#app').innerHTML = h; scrollTo(0, 0); tick(); }
+function modal(h, wide) { $('#modal').innerHTML = `<div class="mask" data-act="mMask"><div class="modal ${wide ? 'wide' : ''}" role="dialog" aria-modal="true">${h}</div></div>`; document.body.classList.add('lock'); }
+function closeModal() { $('#modal').innerHTML = ''; if ($('#admin').hidden) document.body.classList.remove('lock'); }
+function applyTheme() {
+  document.documentElement.style.setProperty('--brand', S.cfg.color || '#1d4e5f');
+  document.title = (S.cfg.org ? S.cfg.org + ' · ' : '') + '연수 전자서명';
+}
+function shell(inner) {
+  return `${DEMO ? '<div class="demo">데모 모드 · 이 브라우저에만 저장돼요 <button class="lnk" data-act="demoOff">끝내기</button></div>' : ''}
+  ${topbar(S.cfg.org || '연수 전자서명', S.cfg.sub || '연수 참여 전자서명')}
+  ${S.cfg.notice ? `<div class="notice"><div class="wrap">${esc(S.cfg.notice)}</div></div>` : ''}
+  <main class="wrap">${inner}</main>
+  <footer class="wrap foot"><p class="maker">제작자 문의 · <a href="mailto:replay615@gmail.com">replay615@gmail.com</a></p><button class="lnk" data-act="adminLogin">관리자</button></footer>`;
+}
+
+/* ───── 구성원 화면 ───── */
+async function start() {
+  if (!API && !DEMO) return renderSetup();
+  view('<div class="boot">불러오는 중…</div>');
+  const r = await api('init', { token: TOKEN });
+  if (!r.ok) return view(shell(`<p class="empty">${esc(r.msg || '불러오지 못했어요.')}</p><button class="btn" data-act="retry">다시 시도</button>`));
+  S.cfg = r.cfg; applyTheme();
+  if (!r.tokenOk) return view(shell(`<div class="center"><h2>이 QR/링크는 만료됐어요</h2><p class="mute">이 기관은 미참석자의 원격 서명을 막기 위해<br>공유 QR/링크를 매일 새로 만들어요.<br>오늘 새로 공유된 QR로 다시 접속해 주세요.</p></div>`));
+  S.trainings = r.trainings.map(normT); S.members = r.members; renderPick();
+}
+function renderSetup() {
+  view(`${topbar('연수 전자서명', 'QR 찍고, 서명하면 끝')}
+  <main class="wrap"><h2>시스템 연결이 필요해요</h2>
+  <p class="mute">관리자에게 받은 접속 링크로 들어오시거나, 아래에 웹 앱 배포 URL을 입력해 주세요.</p>
+  <label class="fld">배포 URL<input class="in" id="apiu" placeholder="https://script.google.com/macros/s/…/exec"></label>
+  <small>입력한 주소는 이 기기에만 저장돼요</small>
+  <button class="btn" style="margin-top:16px" data-act="connect">연결하기</button>
+  <button class="btn ghost" style="margin-top:10px" data-act="demoOn">배포 URL 없이 데모 체험하기</button><p class="maker" style="margin-top:26px;text-align:center">제작자 문의 · <a href="mailto:replay615@gmail.com">replay615@gmail.com</a></p></main>`);
+}
+function renderPick() {
+  S.t = null;
+  const rows = S.trainings.map(t => {
+    const dn = S.cfg.deviceLimit && localStorage.getItem('esign_done_' + t.id);
+    const can = t.state === 'open' && !dn;
+    const time = t.from || t.to ? ` · ${t.from || ''}~${t.to || ''}` : '';
+    const note = dn ? '이 기기에서 서명을 완료했어요' : t.state === 'open' ? '서명하기' : t.msg;
+    return `<button class="row" ${can ? '' : 'disabled'} data-act="pickT" data-id="${esc(t.id)}"><span><b>${esc(t.name)}</b><small>${esc(kd(t.date))}${esc(time)}</small></span><em class="${can ? 'go' : ''}">${esc(note)}</em></button>`;
+  }).join('');
+  view(shell(`<h2>어떤 연수에 서명하시겠어요?</h2>${rows ? `<div class="ledger">${rows}</div>` : '<p class="empty">지금 서명할 수 있는 연수가 없어요.<br>연수 날짜와 시간을 확인해 주세요.</p>'}`));
+}
+function renderWho() {
+  const t = S.t, set = new Set(t.ids), done = new Set(t.done);
+  const ms = S.members.filter(m => set.has(m.id));
+  const depts = topFirst([...new Set(ms.map(m => m.dept))]);
+  const names = ms.filter(m => m.dept === S.dept).sort((a, b) => a.name.localeCompare(b.name, 'ko'));
+  view(shell(`<button class="lnk back" data-act="toPick">← 연수 목록</button>
+  <div class="sel"><small>선택한 연수</small><b>${esc(t.name)}</b></div>
+  <label class="fld">부서<select data-chg="deptChg"><option value="">부서를 선택해 주세요</option>${depts.map(d => `<option ${d === S.dept ? 'selected' : ''}>${esc(d)}</option>`).join('')}</select></label>
+  <label class="fld">성명<select data-chg="nameChg" ${S.dept ? '' : 'disabled'}><option value="">${S.dept ? '성명을 선택해 주세요' : '부서를 먼저 선택해 주세요'}</option>${names.map(m => `<option value="${esc(m.id)}" ${done.has(m.id) ? 'disabled' : ''} ${m.id === S.mid ? 'selected' : ''}>${esc(m.name)}${done.has(m.id) ? ' (서명 완료)' : ''}</option>`).join('')}</select></label>
+  <button class="btn" id="goSign" data-act="toSign" ${S.mid ? '' : 'disabled'}>서명하러 가기</button>`));
+}
+function renderSign() {
+  const m = S.members.find(x => x.id === S.mid);
+  view(shell(`<button class="lnk back" data-act="toWho">← 본인 선택</button>
+  <div class="sel"><small>${esc(S.t.name)}</small><b>${esc(m.dept)} ${esc(m.name)}</b></div>
+  <div class="padbox"><canvas id="pad"></canvas><i></i><span class="hint" id="hint">손가락이나 펜으로 서명해 주세요</span></div>
+  <div class="two"><button class="btn ghost" data-act="padClear">다시 쓰기</button><button class="btn" id="submit" data-act="submit">서명 제출하기</button></div>`));
+  padInit();
+}
+function padInit() {
+  const c = $('#pad'), dpr = Math.min(devicePixelRatio || 1, 2), r = c.getBoundingClientRect();
+  c.width = r.width * dpr; c.height = r.height * dpr;
+  const g = c.getContext('2d');
+  g.scale(dpr, dpr); g.lineWidth = 2.8; g.lineCap = g.lineJoin = 'round'; g.strokeStyle = '#111';
+  let down = false, last = [0, 0], n = 0;
+  const pos = e => { const b = c.getBoundingClientRect(); return [e.clientX - b.left, e.clientY - b.top]; };
+  c.onpointerdown = e => {
+    e.preventDefault(); c.setPointerCapture(e.pointerId); down = true; last = pos(e);
+    g.beginPath(); g.moveTo(last[0], last[1]); g.lineTo(last[0] + .1, last[1] + .1); g.stroke(); n++;
+    $('#hint').hidden = true;
+  };
+  c.onpointermove = e => { if (!down) return; const p = pos(e); g.beginPath(); g.moveTo(last[0], last[1]); g.lineTo(p[0], p[1]); g.stroke(); last = p; n++; };
+  c.onpointerup = c.onpointercancel = () => { down = false; };
+  pad = {
+    empty: () => n < 8,
+    clear() { g.clearRect(0, 0, r.width, r.height); n = 0; $('#hint').hidden = false; },
+    data() {
+      for (const w of [360, 260, 180]) {
+        const o = document.createElement('canvas'); o.width = w; o.height = Math.round(w * c.height / c.width);
+        o.getContext('2d').drawImage(c, 0, 0, o.width, o.height);
+        const u = o.toDataURL('image/png'); if (u.length < 40000) return u;
+      }
+      return '';
+    }
+  };
+}
+async function submit() {
+  if (pad.empty()) return toast('서명을 먼저 해 주세요.');
+  const b = $('#submit'); b.disabled = true; b.textContent = '제출하는 중…';
+  const r = await api('sign', { token: TOKEN, trainingId: S.t.id, memberId: S.mid, img: pad.data() });
+  if (r.ok) { localStorage.setItem('esign_done_' + S.t.id, '1'); return renderDone(); }
+  b.disabled = false; b.textContent = '서명 제출하기';
+  if (['dup', 'closed', 'expired', 'target'].includes(r.err)) {
+    view(shell(`<div class="center"><h2>서명할 수 없어요</h2><p class="mute">${esc(r.msg)}</p></div><button class="btn" data-act="retry">확인</button>`));
+  } else toast(r.msg || '오류가 발생했어요. 잠시 후 다시 시도해 주세요.');
+}
+function renderDone() {
+  const m = S.members.find(x => x.id === S.mid);
+  view(shell(`<svg class="ok" viewBox="0 0 76 76" aria-hidden="true"><circle cx="38" cy="38" r="35" fill="none" stroke="var(--brand)" stroke-width="3"/><path d="M23 39l10 10 20-22" fill="none" stroke="var(--brand)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="center"><h2>서명 완료!</h2><p class="mute">${esc(m.dept)} ${esc(m.name)}님의 참여 기록이<br>${esc(S.t.name)}에 접수되었어요.</p></div>
+  <button class="btn" data-act="retry">다른 연수 서명하기</button>`));
+}
+
+/* ───── 관리자 ───── */
+function adminLogin() {
+  modal(`<h3>관리자 확인</h3><p class="mute">관리자 비밀번호를 입력해 주세요.</p><form id="lf" data-submit="doLogin"><input id="pin" class="in" type="password" autocomplete="current-password" aria-label="관리자 비밀번호"><div class="two"><button type="button" class="btn ghost" data-act="mClose">취소</button><button type="submit" class="btn">확인</button></div></form>`);
+  setTimeout(() => { const e = $('#pin'); if (e) e.focus(); }, 60);
+}
+let logging = false;
+async function doLogin() {
+  if (logging) return;
+  logging = true;
+  const pin = $('#pin').value, r = await api('login', { pin });
+  logging = false;
+  if (!r.ok) return toast(r.msg || '비밀번호가 맞지 않아요.');
+  S.pin = pin; closeModal();
+  if (await loadA()) { $('#admin').hidden = false; document.body.classList.add('lock'); renderAdmin(); }
+}
+async function loadA() {
+  const r = await api('load', { pin: S.pin });
+  if (!r.ok) { toast(r.msg || '불러오지 못했어요.'); return false; }
+  A = r; A.trainings = A.trainings.map(normT); A.signs = A.signs.map(s => ({ ...s, at: na(s.at) })); return true;
+}
+const refresh = async () => { if (await loadA()) renderAdmin(); };
+function renderAdmin() {
+  const tabs = [['trn', '연수'], ['mem', '구성원'], ['sig', '서명 현황'], ['qr', '공유 QR'], ['cfg', '설정']];
+  $('#admin').innerHTML = `<div class="abar"><div class="wrap wide"><div class="arow"><b>관리자 <small>(화면 v6 · 서버 ${A.ver ? 'v' + A.ver : '구버전 — 새 버전 배포 필요'})</small></b><button class="lnk" data-act="adminClose">닫기</button></div><nav class="tabs">${tabs.map(([k, n]) => `<button class="${k === aTab ? 'on' : ''}" data-act="tab" data-k="${k}">${n}</button>`).join('')}</nav></div></div>
+  <div class="wrap wide apage">${A.defaultPin ? '<div class="warn">기본 비밀번호(1234)를 쓰고 있어요. 설정 탭에서 바로 바꿔 주세요.</div>' : ''}<div id="ap"></div></div>`;
+  ({ trn: tabTrn, mem: tabMem, sig: tabSig, qr: tabQr, cfg: tabCfg })[aTab]();
+}
+const tgtLabel = t => t.target === 'all' ? '전 교원' : t.target === 'dept' ? `부서 ${t.targetIds.length}개` : `개인 ${t.targetIds.length}명`;
+
+function tabTrn() {
+  const n = t => A.signs.filter(s => s.trainingId === t.id).length;
+  const list = [...A.trainings].sort((a, b) => b.date.localeCompare(a.date));
+  $('#ap').innerHTML = `<div class="arow"><h2>연수</h2><button class="btn sm" data-act="editT" data-id="">+ 새 연수</button></div>
+  ${list.length ? `<div class="ledger">${list.map(t => `<button class="row" data-act="editT" data-id="${esc(t.id)}"><span><b>${esc(t.name)}</b><small>${esc(kd(t.date))}${t.from || t.to ? ` · ${esc(t.from)}~${esc(t.to)}` : ''} · ${tgtLabel(t)}</small></span><em>${n(t)}/${t.ids.length}명</em></button>`).join('')}</div>` : '<p class="empty">등록된 연수가 없어요.<br>새 연수를 추가해 주세요.</p>'}`;
+}
+function editT(el) {
+  const t = A.trainings.find(x => x.id === el.dataset.id) || { id: '', name: '', date: ymd(new Date()), target: 'all', targetIds: [], from: '', to: '' };
+  const depts = topFirst([...new Set(A.members.map(m => m.dept))]);
+  const none = '<small>먼저 구성원을 등록해 주세요.</small>';
+  modal(`<h3>${t.id ? '연수 수정' : '새 연수 추가'}</h3>
+  <label class="fld">연수명<input class="in" id="tn" value="${esc(t.name)}" maxlength="60"></label>
+  <label class="fld">연수 날짜<input class="in" id="td" type="date" value="${esc(t.date)}"></label>
+  <div class="fld">서명 가능 시간 <small>(선택 · 비우면 하루 종일)</small><div class="two" style="margin-top:6px"><input class="in" id="tf" type="time" value="${esc(t.from)}" style="margin:0"><input class="in" id="tt" type="time" value="${esc(t.to)}" style="margin:0"></div></div>
+  <div class="fld">연수 대상<div class="seg">${[['all', '전 교원'], ['dept', '부서 선택'], ['person', '개별 선택']].map(([v, l]) => `<label><input type="radio" name="tg" value="${v}" data-chg="tgChg" ${t.target === v ? 'checked' : ''}>${l}</label>`).join('')}</div></div>
+  <div id="tgDept" class="box" hidden>${depts.map(d => `<label class="chk"><input type="checkbox" class="dchk" value="${esc(d)}" ${t.target === 'dept' && t.targetIds.includes(d) ? 'checked' : ''}>${esc(d)}</label>`).join('') || none}</div>
+  <div id="tgPerson" class="box" hidden>${depts.map(d => `<div class="grp"><b>${esc(d)}</b>${A.members.filter(m => m.dept === d).map(m => `<label class="chk"><input type="checkbox" class="pchk" value="${esc(m.id)}" ${t.target === 'person' && t.targetIds.includes(m.id) ? 'checked' : ''}>${esc(m.name)}</label>`).join('')}</div>`).join('') || none}</div>
+  <div class="two"><button class="btn ghost" data-act="mClose">닫기</button><button class="btn" data-act="saveT" data-id="${esc(t.id)}">저장하기</button></div>
+  ${t.id ? `<button class="lnk bad" data-act="delT" data-id="${esc(t.id)}">이 연수 삭제</button>` : ''}`);
+  tgChg();
+}
+function tgChg() { const v = $('input[name=tg]:checked').value; $('#tgDept').hidden = v !== 'dept'; $('#tgPerson').hidden = v !== 'person'; }
+async function saveT(el) {
+  const target = $('input[name=tg]:checked').value;
+  const targetIds = target === 'dept' ? $$('.dchk:checked').map(x => x.value) : target === 'person' ? $$('.pchk:checked').map(x => x.value) : [];
+  const t = { id: el.dataset.id, name: $('#tn').value.trim(), date: $('#td').value, from: $('#tf').value, to: $('#tt').value, target, targetIds };
+  if (!t.name || !t.date) return toast('연수명과 날짜를 입력해 주세요.');
+  if (target !== 'all' && !targetIds.length) return toast('대상을 한 명 이상 선택해 주세요.');
+  if (t.from && t.to && t.from >= t.to) return toast('종료 시간은 시작 시간보다 늦어야 해요.');
+  const r = await api('saveTraining', { pin: S.pin, t });
+  if (!r.ok) return toast(r.msg || '저장하지 못했어요.');
+  closeModal(); toast('저장했어요.'); refresh();
+}
+async function delT(el) {
+  if (!confirm('이 연수와 서명 기록이 모두 삭제돼요. 삭제할까요?')) return;
+  const r = await api('delTraining', { pin: S.pin, id: el.dataset.id });
+  if (!r.ok) return toast(r.msg); closeModal(); refresh();
+}
+
+function tabMem() {
+  const depts = topFirst([...new Set(A.members.map(m => m.dept))]);
+  $('#ap').innerHTML = `<h2>구성원 <small>${A.members.length}명</small></h2>
+  <div class="box"><label class="fld">부서<input class="in" id="md" maxlength="30" list="dl"><datalist id="dl">${depts.map(d => `<option value="${esc(d)}">`).join('')}</datalist></label>
+  <label class="fld">성명 <small>(여러 명은 줄바꿈이나 쉼표로 구분)</small><textarea class="in" id="mn" rows="3"></textarea></label>
+  <button class="btn sm" data-act="addM">구성원 추가</button></div>
+  <div class="box"><b>엑셀로 일괄 등록</b><p class="mute">A열 부서, B열 성명으로 적어 올려 주세요. 첫 줄이 ‘부서·성명’이면 제목으로 보고 건너뛰어요. CSV는 UTF-8로 저장해 주세요.</p>
+  <div class="arow" style="justify-content:flex-start"><label class="btn sm ghost">파일 선택<input type="file" accept=".xlsx,.xls,.csv" data-chg="xlsx" hidden></label><button class="btn sm ghost" data-act="tpl">엑셀 양식 받기</button></div></div>
+  ${depts.map(d => `<div class="grp"><b>${esc(d)}</b><div class="chips">${A.members.filter(m => m.dept === d).map(m => `<span class="chip">${esc(m.name)}<button data-act="delM" data-id="${esc(m.id)}" aria-label="${esc(m.name)} 삭제">×</button></span>`).join('')}</div></div>`).join('') || '<p class="empty">아직 구성원이 없어요.</p>'}`;
+}
+async function addList(list) {
+  if (!list.length) return toast('등록할 구성원이 없어요.');
+  const r = await api('addMembers', { pin: S.pin, list });
+  if (!r.ok) return toast(r.msg);
+  toast(`${r.added}명을 추가했어요.`); refresh();
+}
+function addM() {
+  const dept = $('#md').value.trim();
+  const list = $('#mn').value.split(/[\n,]+/).map(s => s.trim()).filter(Boolean).map(name => ({ dept, name }));
+  if (!dept) return toast('부서를 입력해 주세요.');
+  addList(list);
+}
+async function xlsx(el) {
+  const f = el.files[0]; if (!f) return;
+  if (typeof XLSX === 'undefined') return toast('엑셀 읽기 도구를 불러오지 못했어요.');
+  try {
+    const wb = XLSX.read(await f.arrayBuffer(), { type: 'array' });
+    const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1, defval: '' });
+    let list = rows.map(r => ({ dept: String(r[0]).trim(), name: String(r[1]).trim() })).filter(x => x.dept && x.name);
+    if (list.length && list[0].dept === '부서' && list[0].name === '성명') list.shift();
+    if (list.length && confirm(`${list.length}명을 등록할까요? (이미 있는 사람은 건너뛰어요)`)) addList(list);
+    else if (!list.length) toast('읽을 수 있는 구성원이 없어요.');
+  } catch (e) { toast('파일을 읽지 못했어요.'); }
+  el.value = '';
+}
+function tpl() {
+  if (typeof XLSX === 'undefined') return toast('엑셀 도구를 불러오지 못했어요.');
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([['부서', '성명'], ['교무부', '홍길동'], ['교무부', '김철수'], ['행정실', '이영희']]), '구성원');
+  XLSX.writeFile(wb, '구성원_양식.xlsx');
+}
+async function delM(el) {
+  if (!confirm('이 구성원과 서명 기록을 삭제할까요?')) return;
+  const r = await api('delMember', { pin: S.pin, id: el.dataset.id });
+  if (!r.ok) return toast(r.msg); refresh();
+}
+
+async function tabSig() {
+  const ts = [...A.trainings].sort((a, b) => b.date.localeCompare(a.date));
+  if (!ts.length) { $('#ap').innerHTML = '<h2>서명 현황</h2><p class="empty">먼저 연수를 등록해 주세요.</p>'; return; }
+  if (!ts.find(t => t.id === sigT)) sigT = (ts.find(t => t.date <= ymd(new Date())) || ts[ts.length - 1]).id;
+  const t = ts.find(x => x.id === sigT);
+  $('#ap').innerHTML = `<h2>서명 현황</h2><select data-chg="sigSel">${ts.map(x => `<option value="${esc(x.id)}" ${x.id === sigT ? 'selected' : ''}>${esc(kd(x.date))} ${esc(x.name)}</option>`).join('')}</select><div id="sigBody"><p class="mute">불러오는 중…</p></div>`;
+  const r = await api('getSigns', { pin: S.pin, trainingId: sigT });
+  if (!r.ok) return toast(r.msg);
+  A.cur = r.signs.map(s => ({ ...s, at: na(s.at) }));
+  const by = new Map(A.cur.map(s => [s.memberId, s]));
+  const ms = nameSort(A.members.filter(m => t.ids.includes(m.id)));
+  const signed = ms.filter(m => by.has(m.id)), un = ms.filter(m => !by.has(m.id));
+  $('#sigBody').innerHTML = `<div class="stat"><b>${signed.length}</b>/ ${ms.length}명 서명 <span>(${ms.length ? Math.round(signed.length / ms.length * 100) : 0}%)</span><button class="btn sm" data-act="printOpt">서명등록부 출력</button></div>
+  <h3>미서명 ${un.length}명</h3><div class="chips">${un.map(m => `<span class="chip"><b>${esc(m.name)}</b><small>${esc(m.dept)}</small></span>`).join('') || '<small>대상자 모두 서명했어요.</small>'}</div>
+  <h3>서명 완료 ${signed.length}명</h3>${signed.length ? `<div class="ledger">${signed.map(m => { const s = by.get(m.id); return `<div class="srow"><div class="who"><b>${esc(m.name)}</b><small>${esc(m.dept)}</small></div><img class="thumb" src="${esc(s.img)}" alt="서명"><div class="when">${esc(kt(s.at))}</div><button class="lnk bad" data-act="delS" data-id="${esc(s.id)}">삭제</button></div>`; }).join('')}</div>` : '<small>아직 서명한 사람이 없어요.</small>'}`;
+}
+async function delS(el) {
+  if (!confirm('이 서명을 삭제할까요? 본인이 다시 서명할 수 있게 돼요.')) return;
+  const r = await api('delSign', { pin: S.pin, id: el.dataset.id });
+  if (!r.ok) return toast(r.msg); refresh();
+}
+function printOpt() {
+  const seg = (name, items, def) => `<div class="seg">${items.map(([v, l]) => `<label><input type="radio" name="${name}" value="${v}" ${v === def ? 'checked' : ''}>${l}</label>`).join('')}</div>`;
+  modal(`<h3>서명등록부 출력</h3>
+  <div class="fld">표 열 수${seg('pc', [[1, '1열'], [2, '2열'], [3, '3열']], 2)}</div>
+  <p class="mute">교장 → 교감 → 나머지는 이름 가나다순으로 출력돼요.</p>
+  <div class="fld">서명률 표시${seg('pr', [['1', '포함'], ['0', '미포함']], '1')}</div>
+  <div class="two"><button class="btn ghost" data-act="mClose">취소</button><button class="btn" data-act="printPrev">미리보기</button></div>`);
+}
+function printPrev() {
+  const t = A.trainings.find(x => x.id === sigT);
+  const cols = +$('input[name=pc]:checked').value, rate = $('input[name=pr]:checked').value === '1';
+  const by = new Map(A.cur.map(s => [s.memberId, s]));
+  const ms = nameSort(A.members.filter(m => t.ids.includes(m.id)));
+  const rows = Math.max(1, Math.ceil(ms.length / cols));
+  let body = '';
+  for (let r = 0; r < rows; r++) {
+    body += '<tr>';
+    for (let c = 0; c < cols; c++) {
+      const i = c * rows + r, m = ms[i];
+      if (!m) { body += '<td></td><td></td><td></td><td></td>'; continue; }
+      const s = by.get(m.id);
+      body += `<td class="n">${i + 1}</td><td class="m">${esc(m.name)}</td><td class="d${m.dept.length > 4 ? ' long' : ''}">${esc(m.dept)}</td><td class="sg">${s ? `<img src="${esc(s.img)}" alt="">` : ''}</td>`;
+    }
+    body += '</tr>';
+  }
+  const head = '<th class="n">번호</th><th class="m">성명</th><th class="d">부서</th><th>서명</th>'.repeat(cols);
+  const done = ms.filter(m => by.has(m.id)).length;
+  lastSheet = `<div class="sheet cols${cols}"><h1><img src="${LOGO}" alt="">${esc(A.cfg.org)}</h1><h2>${esc(t.name)} 서명등록부</h2>
+  <p>일시: ${esc(kd(t.date))}${t.from || t.to ? ` ${esc(t.from)}~${esc(t.to)}` : ''} &nbsp; 대상: ${ms.length}명${rate ? ` &nbsp; 서명: ${done}명 (${ms.length ? Math.round(done / ms.length * 100) : 0}%)` : ''}</p>
+  <table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+  const z = Math.min(1, (innerWidth - 56) / 704);
+  modal(`<h3>서명등록부 미리보기</h3><div class="prev"><div style="zoom:${z}">${lastSheet}</div></div>
+  <div class="two"><button class="btn ghost" data-act="mClose">닫기</button><button class="btn" data-act="printNow">인쇄하기 / PDF 저장</button></div>`, true);
+}
+function printNow() { $('#printRoot').innerHTML = lastSheet; document.body.classList.add('printing'); window.print(); }
+addEventListener('afterprint', () => { document.body.classList.remove('printing'); $('#printRoot').innerHTML = ''; });
+
+function qrUrl() {
+  const k = A.cfg.qrMode === 'daily' ? A.tokens.daily : A.tokens.fixed;
+  return `${location.origin === 'null' || location.protocol === 'file:' ? location.href.split(/[?#]/)[0] : location.origin + location.pathname}?t=${k}`;
+}
+function tabQr() {
+  const url = qrUrl(), daily = A.cfg.qrMode === 'daily';
+  $('#ap').innerHTML = `<h2>공유 QR</h2><p class="mute">${daily ? '매일 자정에 새 QR로 바뀌어요. 연수 당일 아침 이 화면에서 새 QR을 공유해 주세요.' : '항상 같은 QR이에요. 대리 서명이 걱정되면 설정에서 ‘매일 바뀌는 QR’을 선택해 주세요.'}${DEMO ? ' (데모 모드의 링크는 이 브라우저에서만 쓸 수 있어요.)' : ''}</p>
+  <div class="qrbox"><div id="qr"></div></div><input class="in" id="lk" readonly value="${esc(url)}" style="margin:0 0 4px">
+  <div class="two"><button class="btn ghost" data-act="cpLink">링크 복사</button><button class="btn" data-act="saveQr">이미지 저장</button></div>`;
+  if (typeof QRCode === 'undefined') $('#qr').textContent = 'QR 도구를 불러오지 못했어요. 링크를 복사해서 공유해 주세요.';
+  else new QRCode($('#qr'), { text: url, width: 260, height: 260, correctLevel: QRCode.CorrectLevel.M });
+}
+async function cpLink() {
+  const v = $('#lk').value;
+  try { await navigator.clipboard.writeText(v); } catch (e) { $('#lk').select(); document.execCommand('copy'); }
+  toast('링크를 복사했어요.');
+}
+function saveQr() {
+  const c = $('#qr canvas'), i = $('#qr img'), src = c ? c.toDataURL('image/png') : i && i.src;
+  if (!src) return toast('QR 이미지를 만들지 못했어요.');
+  const a = document.createElement('a'); a.href = src; a.download = '연수서명_QR.png'; a.click();
+}
+function tabCfg() {
+  const c = A.cfg;
+  $('#ap').innerHTML = `<h2>설정</h2><div class="box">
+  <label class="fld">기관명<input class="in" id="co" value="${esc(c.org)}" maxlength="40"></label>
+  <label class="fld">부제목 <small>(선택)</small><input class="in" id="cs" value="${esc(c.sub)}" maxlength="40" placeholder="연수 참여 전자서명"></label>
+  <label class="fld">안내문 <small>(선택 · 서명 화면 위에 표시)</small><textarea class="in" id="cn" rows="2" maxlength="200">${esc(c.notice)}</textarea></label>
+  <label class="fld">대표 색상<input type="color" id="cc" value="${esc(c.color)}"></label>
+  <div class="fld">공유 QR 방식<div class="seg col">
+  <label><input type="radio" name="qm" value="fixed" ${c.qrMode !== 'daily' ? 'checked' : ''}>항상 같은 QR <small>한 번 공유하면 계속 사용해요</small></label>
+  <label><input type="radio" name="qm" value="daily" ${c.qrMode === 'daily' ? 'checked' : ''}>매일 바뀌는 QR <small>어제 받은 QR로는 서명할 수 없어 대리 서명을 막아요</small></label></div></div>
+  <label class="chk" style="margin-top:12px"><input type="checkbox" id="cd" ${c.deviceLimit ? 'checked' : ''}>한 기기에서는 연수당 한 번만 서명</label>
+  <small>현관 태블릿처럼 한 기기를 여럿이 쓰면 꺼 주세요.</small>
+  <button class="btn" data-act="saveCfg">저장하기</button></div>
+  <form class="box" data-submit="chPin"><b>관리자 비밀번호 변경</b><input class="in" id="np" type="password" placeholder="새 비밀번호 (4자 이상)" autocomplete="new-password"><button class="btn sm" type="submit" style="margin-top:12px">변경하기</button></form>
+  ${DEMO ? '<div class="box"><button class="btn sm ghost" data-act="demoReset">데모 데이터 처음으로 되돌리기</button></div>' : (!API_URL ? '<div class="box"><button class="btn sm ghost" data-act="chApi">다른 배포 URL로 연결 변경</button></div>' : '')}`;
+}
+async function saveCfg() {
+  const cfg = { org: $('#co').value.trim(), sub: $('#cs').value.trim(), notice: $('#cn').value.trim(), color: $('#cc').value, qrMode: $('input[name=qm]:checked').value, deviceLimit: $('#cd').checked };
+  if (!cfg.org) return toast('기관명을 입력해 주세요.');
+  const r = await api('saveCfg', { pin: S.pin, cfg });
+  if (!r.ok) return toast(r.msg);
+  S.cfg = { ...S.cfg, ...cfg }; applyTheme(); toast('저장했어요.'); refresh();
+}
+async function chPin() {
+  const np = $('#np').value;
+  if (np.length < 4) return toast('비밀번호는 4자 이상으로 정해 주세요.');
+  const r = await api('setPin', { pin: S.pin, newPin: np });
+  if (!r.ok) return toast(r.msg);
+  S.pin = np; toast('비밀번호를 바꿨어요.'); refresh();
+}
+function adminClose() { $('#admin').hidden = true; $('#admin').innerHTML = ''; document.body.classList.remove('lock'); S.pin = ''; A = null; start(); }
+
+/* ───── 이벤트 ───── */
+const ACT = {
+  retry: start,
+  connect() { const u = $('#apiu').value.trim(); if (!/^https:\/\/script\.google\.com\/.+\/exec$/.test(u)) return toast('…/exec 로 끝나는 웹 앱 URL을 입력해 주세요.'); localStorage.setItem('esign_api', u); API = u; start(); },
+  demoOn() { sessionStorage.setItem('esign_demo', '1'); DEMO = true; start(); },
+  demoOff() { sessionStorage.removeItem('esign_demo'); DEMO = false; start(); },
+  demoReset() { if (confirm('데모 데이터를 처음 상태로 되돌릴까요?')) { localStorage.removeItem(DK); refresh(); } },
+  chApi() { localStorage.removeItem('esign_api'); location.reload(); },
+  pickT(el) { S.t = S.trainings.find(t => t.id === el.dataset.id); S.dept = ''; S.mid = ''; renderWho(); },
+  toPick: renderPick, toWho: renderWho, toSign: renderSign,
+  deptChg(el) { S.dept = el.value; S.mid = ''; renderWho(); },
+  nameChg(el) { S.mid = el.value; $('#goSign').disabled = !S.mid; },
+  padClear() { pad.clear(); }, submit,
+  adminLogin, doLogin, adminClose,
+  mClose: closeModal, mMask(el, e) { if (e.target === el) closeModal(); },
+  tab(el) { aTab = el.dataset.k; renderAdmin(); },
+  editT, tgChg, saveT, delT, addM, xlsx, tpl, delM,
+  sigSel(el) { sigT = el.value; tabSig(); }, delS, printOpt, printPrev, printNow,
+  cpLink, saveQr, saveCfg, chPin
+};
+document.addEventListener('click', e => { const el = e.target.closest('[data-act]'); if (el && ACT[el.dataset.act]) ACT[el.dataset.act](el, e); });
+document.addEventListener('change', e => { const el = e.target.closest('[data-chg]'); if (el && ACT[el.dataset.chg]) ACT[el.dataset.chg](el, e); });
+document.addEventListener('submit', e => { const f = e.target.closest('[data-submit]'); if (f && ACT[f.dataset.submit]) { e.preventDefault(); ACT[f.dataset.submit](f, e); } });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('#modal').innerHTML) closeModal(); });
+
+/* ───── 데모 백엔드 (이 브라우저의 localStorage에만 저장) ───── */
+const DK = 'esign_demo_v1';
+const dput = d => localStorage.setItem(DK, JSON.stringify(d));
+function dget() {
+  let d = JSON.parse(localStorage.getItem(DK) || 'null');
+  if (!d) {
+    const g = { 교무부: ['김교무', '이학사', '박교육', '정기획'], 학생부: ['최생활', '강지도', '윤상담'], 특수교육: ['한특수', '오직업', '서자립', '문통합'], 행정실: ['임행정', '조회계'] };
+    const members = []; let i = 0;
+    for (const dept in g) g[dept].forEach(name => members.push({ id: 'm' + (++i), dept, name }));
+    d = { cfg: { org: '서산중앙고등학교', sub: '', notice: '', color: '#1d4e5f', qrMode: 'fixed', deviceLimit: false }, members, trainings: [{ id: 't1', name: '교직원 정보보안 연수', date: ymd(new Date()), target: 'all', targetIds: [], from: '', to: '' }], signs: [], pin: '1234' };
+    dput(d);
+  }
+  return d;
+}
+async function demo(a, q) {
+  const d = dget(), now = new Date(), today = ymd(now), tm = hm(now);
+  const ok = o => ({ ok: true, ...o }), no = (err, msg) => ({ ok: false, err, msg });
+  const ids = t => d.members.filter(m => t.target === 'all' || (t.target === 'dept' && t.targetIds.includes(m.dept)) || (t.target === 'person' && t.targetIds.includes(m.id))).map(m => m.id);
+  const st = t => t.date < today ? ['past', '종료된 연수예요'] : t.date > today ? ['early', kd(t.date) + '에 서명할 수 있어요'] : t.from && tm < t.from ? ['early', t.from + '부터 서명할 수 있어요'] : t.to && tm > t.to ? ['late', '서명 시간이 끝났어요'] : ['open', ''];
+  const day = n => ymd(new Date(now.getTime() + n * 864e5)), uid = () => Math.random().toString(36).slice(2, 10);
+  if (a === 'init') {
+    const c = d.cfg;
+    return ok({
+      tokenOk: true, cfg: { org: c.org, sub: c.sub, notice: c.notice, color: c.color, deviceLimit: c.deviceLimit }, members: d.members,
+      trainings: d.trainings.filter(t => t.date >= day(-3) && t.date <= day(30)).map(t => { const s = st(t); return { id: t.id, name: t.name, date: t.date, from: t.from, to: t.to, state: s[0], msg: s[1], ids: ids(t), done: d.signs.filter(x => x.trainingId === t.id).map(x => x.memberId) }; })
+        .sort((x, y) => (x.state === 'open' ? 0 : 1) - (y.state === 'open' ? 0 : 1) || x.date.localeCompare(y.date))
+    });
+  }
+  if (a === 'sign') {
+    const t = d.trainings.find(x => x.id === q.trainingId);
+    if (!t) return no('nf', '연수를 찾을 수 없어요.');
+    const s = st(t); if (s[0] !== 'open') return no('closed', s[1]);
+    if (!ids(t).includes(q.memberId)) return no('target', '이 연수의 대상자가 아니에요.');
+    if (d.signs.some(x => x.trainingId === t.id && x.memberId === q.memberId)) return no('dup', '이미 서명한 연수예요.');
+    d.signs.push({ id: uid(), trainingId: t.id, memberId: q.memberId, at: `${today} ${tm}:00`, img: q.img }); dput(d); return ok();
+  }
+  if (q.pin !== d.pin) return no('pin', '비밀번호가 맞지 않아요.');
+  switch (a) {
+    case 'login': return ok();
+    case 'load': return ok({ ver: 3, cfg: d.cfg, defaultPin: d.pin === '1234', tokens: { fixed: 'demo', daily: 'demo' }, members: d.members, trainings: d.trainings.map(t => ({ ...t, ids: ids(t) })), signs: d.signs.map(({ img, ...s }) => s) });
+    case 'getSigns': return ok({ signs: d.signs.filter(s => s.trainingId === q.trainingId) });
+    case 'saveTraining': { const t = { ...q.t }, i = d.trainings.findIndex(x => x.id === t.id); if (i >= 0) d.trainings[i] = t; else { t.id = uid(); d.trainings.push(t); } break; }
+    case 'delTraining': d.trainings = d.trainings.filter(t => t.id !== q.id); d.signs = d.signs.filter(s => s.trainingId !== q.id); break;
+    case 'addMembers': { let n = 0; q.list.forEach(m => { if (!d.members.some(x => x.dept === m.dept && x.name === m.name)) { d.members.push({ id: uid(), dept: m.dept, name: m.name }); n++; } }); dput(d); return ok({ added: n }); }
+    case 'delMember': d.members = d.members.filter(m => m.id !== q.id); d.signs = d.signs.filter(s => s.memberId !== q.id); break;
+    case 'delSign': d.signs = d.signs.filter(s => s.id !== q.id); break;
+    case 'saveCfg': Object.assign(d.cfg, q.cfg); break;
+    case 'setPin': d.pin = q.newPin; break;
+    default: return no('action', '알 수 없는 요청이에요.');
+  }
+  dput(d); return ok();
+}
+
+setInterval(tick, 1000);
+start();
+</script>
+</body>
+</html>
