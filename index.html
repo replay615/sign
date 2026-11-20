@@ -260,6 +260,8 @@ function noteOf(t) {
 function renderPick() {
   S.t = null;
   const rows = S.trainings.map(t => {
+    const mine = localStorage.getItem('esign_done_' + t.id); // 이 기기에서 서명한 사람의 번호
+    if (mine && !(t.done || []).includes(mine)) localStorage.removeItem('esign_done_' + t.id); // 관리자가 서명을 삭제했으면 다시 서명 가능
     const dn = S.cfg.deviceLimit && localStorage.getItem('esign_done_' + t.id);
     const can = t.state === 'open' && !dn;
     const time = t.from || t.to ? ` · ${t.from || ''}~${t.to || ''}` : '';
@@ -318,7 +320,7 @@ async function submit() {
   if (pad.empty()) return toast('서명을 먼저 해 주세요.');
   const b = $('#submit'); b.disabled = true; b.textContent = '제출하는 중…';
   const r = await api('sign', { token: TOKEN, trainingId: S.t.id, memberId: S.mid, img: pad.data() });
-  if (r.ok) { localStorage.setItem('esign_done_' + S.t.id, '1'); return renderDone(); }
+  if (r.ok) { localStorage.setItem('esign_done_' + S.t.id, S.mid); return renderDone(); }
   b.disabled = false; b.textContent = '서명 제출하기';
   if (['dup', 'closed', 'expired', 'target'].includes(r.err)) {
     view(shell(`<div class="center"><h2>서명할 수 없어요</h2><p class="mute">${esc(r.msg)}</p></div><button class="btn" data-act="retry">확인</button>`));
@@ -354,7 +356,7 @@ async function loadA() {
 const refresh = async () => { if (await loadA()) renderAdmin(); };
 function renderAdmin() {
   const tabs = [['trn', '연수'], ['mem', '구성원'], ['sig', '서명 현황'], ['qr', '공유 QR'], ['cfg', '설정']];
-  $('#admin').innerHTML = `<div class="abar"><div class="wrap wide"><div class="arow"><b>관리자 <small>(화면 v9 · 서버 ${A.ver ? 'v' + A.ver : '구버전 — 새 버전 배포 필요'})</small></b><button class="lnk" data-act="adminClose">닫기</button></div><nav class="tabs">${tabs.map(([k, n]) => `<button class="${k === aTab ? 'on' : ''}" data-act="tab" data-k="${k}">${n}</button>`).join('')}</nav></div></div>
+  $('#admin').innerHTML = `<div class="abar"><div class="wrap wide"><div class="arow"><b>관리자 <small>(화면 v10 · 서버 ${A.ver ? 'v' + A.ver : '구버전 — 새 버전 배포 필요'})</small></b><button class="lnk" data-act="adminClose">닫기</button></div><nav class="tabs">${tabs.map(([k, n]) => `<button class="${k === aTab ? 'on' : ''}" data-act="tab" data-k="${k}">${n}</button>`).join('')}</nav></div></div>
   <div class="wrap wide apage">${A.defaultPin ? '<div class="warn">기본 비밀번호(1234)를 쓰고 있어요. 설정 탭에서 바로 바꿔 주세요.</div>' : ''}<div id="ap"></div></div>`;
   ({ trn: tabTrn, mem: tabMem, sig: tabSig, qr: tabQr, cfg: tabCfg })[aTab]();
 }
