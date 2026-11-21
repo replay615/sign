@@ -133,20 +133,26 @@ input[type=color]{display:block;margin-top:6px;width:64px;height:40px;border:1px
 .page{position:relative;background:#fff;width:210mm;height:296mm;padding:16mm 12mm 20mm;box-sizing:border-box;overflow:hidden;margin:0 auto 8px;box-shadow:0 1px 5px rgba(0,0,0,.25)}
 .ph{height:14mm}
 .ph h2{font-size:18pt;text-align:center;margin:0;line-height:1.3;letter-spacing:0}
-.info{height:13mm;display:flex;justify-content:space-between;align-items:flex-end;font-size:10pt;line-height:1.45;padding-bottom:1.5mm}
-.info .r{text-align:right}
-.pf{position:absolute;left:12mm;right:12mm;bottom:8mm;display:flex;align-items:center;justify-content:center}
-.pf .sch{display:flex;align-items:center;gap:2mm;font-size:12pt;font-weight:600;white-space:nowrap}
-.pf .sch img{height:8mm;width:auto}
+.info{height:16mm;display:flex;justify-content:space-between;align-items:flex-end;font-size:11.5pt;line-height:1.5;padding-bottom:1.5mm}
+.info .l{font-size:10pt}
+.info .l{flex:1}
+.info .r{flex:none;display:flex;flex-direction:column;gap:.8mm;text-align:left;white-space:nowrap}
+.info .kv{display:flex;align-items:center;gap:2.5mm}
+.info .k{display:inline-flex;align-items:center;gap:1.6mm;min-width:18mm;font-weight:700}
+.info .k svg{width:4.6mm;height:4.6mm;flex:none}
+.pf{position:absolute;left:12mm;right:12mm;bottom:6mm;display:flex;align-items:center;justify-content:center}
+.pf .sch{display:flex;align-items:center;gap:3mm;font-size:17pt;font-weight:700;letter-spacing:-.01em;white-space:nowrap}
+.pf .sch img{height:11mm;width:auto}
 .pf .pn{position:absolute;right:0;font-size:9pt;color:#555}
 .sheet table{width:100%;border-collapse:collapse;table-layout:fixed}
 .sheet th,.sheet td{border:.3mm solid #000;padding:0 1mm;height:var(--rh);font-size:10pt;text-align:center;overflow:hidden;line-height:1.15}
 .sheet th{height:8mm;background:#eee;font-weight:600}
 .sheet .n{width:8mm;font-size:8.5pt;color:#444}
-.sheet .m{width:28mm}.sheet .d{width:40mm;white-space:nowrap}
+.sheet .m{width:28mm}.sheet .d{width:50mm;white-space:nowrap}
 .sheet td.d.long{font-size:8pt;letter-spacing:-.02em}
-.sheet.cols2 .m{width:18mm}.sheet.cols2 .d{width:24mm}
-.sheet.cols3 .n{width:7mm}.sheet.cols3 .m{width:14mm}.sheet.cols3 .d{width:20mm}
+.sheet.cols2 .m{width:18mm}.sheet.cols2 .d{width:32mm}
+.sheet th.n{white-space:nowrap;font-size:8pt;padding:0}
+.sheet.cols3 .n{width:8.5mm}.sheet.cols3 .m{width:14mm}.sheet.cols3 .d{width:24mm}
 .sheet.cols3 td.d.long{font-size:7.5pt}
 .sheet.cols3 td{font-size:9pt}
 .sheet .sg img{max-width:100%;max-height:8.5mm;display:block;margin:0 auto}
@@ -207,7 +213,7 @@ const TOKEN = qs.get('t') || '';
 let API = API_URL || localStorage.getItem('esign_api') || '';
 let DEMO = sessionStorage.getItem('esign_demo') === '1';
 const S = { cfg: {}, trainings: [], members: [], t: null, dept: '', name: '', pin: '' };
-const NOMATCH = '명단에서 찾을 수 없어요. 과목과 이름(띄어쓰기 없이)을 다시 확인해 주세요.';
+const NOMATCH = '명단에서 찾을 수 없어요. 표시과목과 이름(띄어쓰기 없이)을 다시 확인해 주세요.';
 let A = null, aTab = 'trn', pad = null, sigT = '', lastSheet = '';
 
 /* ───── 통신 ───── */
@@ -284,19 +290,19 @@ function renderWho() {
   view(shell(`<button class="lnk back" data-act="toPick">← 연수 목록</button>
   <div class="sel"><small>선택한 연수</small><b>${esc(t.name)}</b></div>
   <form data-submit="toSign">
-  <label class="fld">과목<select data-chg="deptChg"><option value="">과목을 선택해 주세요</option>${depts.map(d => `<option ${d === S.dept ? 'selected' : ''}>${esc(d)}</option>`).join('')}</select></label>
+  <label class="fld">표시과목<select data-chg="deptChg"><option value="">표시과목을 선택해 주세요</option>${depts.map(d => `<option ${d === S.dept ? 'selected' : ''}>${esc(d)}</option>`).join('')}</select></label>
   <label class="fld">성명<input class="in" id="nm" value="${esc(S.name)}" maxlength="20" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="go" placeholder="본인 이름을 입력해 주세요"></label>
   <p class="err" id="werr" role="alert"></p>
   <button class="btn" id="goSign" type="submit">서명하러 가기</button></form>`));
 }
 async function toSign() {
   S.name = $('#nm').value.trim();
-  if (!S.dept) return toast('과목을 선택해 주세요.');
+  if (!S.dept) return toast('표시과목을 선택해 주세요.');
   if (!S.name) return toast('성명을 입력해 주세요.');
   const b = $('#goSign'); b.disabled = true; $('#werr').textContent = '';
   const r = await api('check', { token: TOKEN, trainingId: S.t.id, dept: S.dept, name: S.name });
   b.disabled = false;
-  if (!r.ok) { $('#werr').textContent = r.msg || '확인하지 못했어요. 잠시 후 다시 시도해 주세요.'; return; }
+  if (!r.ok) { $('#werr').textContent = r.err === 'nomatch' ? NOMATCH : (r.msg || '확인하지 못했어요. 잠시 후 다시 시도해 주세요.'); return; }
   renderSign();
 }
 function renderSign() {
@@ -374,11 +380,11 @@ async function loadA() {
 const refresh = async () => { if (await loadA()) renderAdmin(); };
 function renderAdmin() {
   const tabs = [['trn', '연수'], ['mem', '구성원'], ['sig', '서명 현황'], ['qr', '공유 QR'], ['cfg', '설정']];
-  $('#admin').innerHTML = `<div class="abar"><div class="wrap wide"><div class="arow"><b>관리자 <small>(화면 v16 · 서버 ${A.ver ? 'v' + A.ver : '구버전 — 새 버전 배포 필요'})</small></b><button class="lnk" data-act="adminClose">닫기</button></div><nav class="tabs">${tabs.map(([k, n]) => `<button class="${k === aTab ? 'on' : ''}" data-act="tab" data-k="${k}">${n}</button>`).join('')}</nav></div></div>
+  $('#admin').innerHTML = `<div class="abar"><div class="wrap wide"><div class="arow"><b>관리자 <small>(화면 v19 · 서버 ${A.ver ? 'v' + A.ver : '구버전 — 새 버전 배포 필요'})</small></b><button class="lnk" data-act="adminClose">닫기</button></div><nav class="tabs">${tabs.map(([k, n]) => `<button class="${k === aTab ? 'on' : ''}" data-act="tab" data-k="${k}">${n}</button>`).join('')}</nav></div></div>
   <div class="wrap wide apage">${A.defaultPin ? '<div class="warn">기본 비밀번호(1234)를 쓰고 있어요. 설정 탭에서 바로 바꿔 주세요.</div>' : ''}<div id="ap"></div></div>`;
   ({ trn: tabTrn, mem: tabMem, sig: tabSig, qr: tabQr, cfg: tabCfg })[aTab]();
 }
-const tgtLabel = t => t.target === 'all' ? '전 교원' : t.target === 'dept' ? `과목 ${t.targetIds.length}개` : `개인 ${t.targetIds.length}명`;
+const tgtLabel = t => t.target === 'all' ? '전 교원' : t.target === 'dept' ? `표시과목 ${t.targetIds.length}개` : `개인 ${t.targetIds.length}명`;
 
 function tabTrn() {
   const n = t => A.signs.filter(s => s.trainingId === t.id).length;
@@ -395,7 +401,7 @@ function editT(el) {
   <label class="fld">연수 날짜<input class="in" id="td" type="date" value="${esc(t.date)}"></label>
   <div class="fld">서명 가능 시간 <small>(선택 · 비우면 하루 종일)</small><div class="two" style="margin-top:6px"><input class="in" id="tf" type="time" value="${esc(t.from)}" style="margin:0"><input class="in" id="tt" type="time" value="${esc(t.to)}" style="margin:0"></div></div>
   <label class="fld">장소 <small>(선택 · 서명등록부 오른쪽 위에 표시)</small><input class="in" id="tp" value="${esc(t.place || '')}" maxlength="40" placeholder="예: 본관 2층 시청각실"></label>
-  <div class="fld">연수 대상<div class="seg">${[['all', '전 교원'], ['dept', '과목 선택'], ['person', '개별 선택']].map(([v, l]) => `<label><input type="radio" name="tg" value="${v}" data-chg="tgChg" ${t.target === v ? 'checked' : ''}>${l}</label>`).join('')}</div></div>
+  <div class="fld">연수 대상<div class="seg">${[['all', '전 교원'], ['dept', '표시과목 선택'], ['person', '개별 선택']].map(([v, l]) => `<label><input type="radio" name="tg" value="${v}" data-chg="tgChg" ${t.target === v ? 'checked' : ''}>${l}</label>`).join('')}</div></div>
   <div id="tgDept" class="box" hidden>${depts.map(d => `<label class="chk"><input type="checkbox" class="dchk" value="${esc(d)}" ${t.target === 'dept' && t.targetIds.includes(d) ? 'checked' : ''}>${esc(d)}</label>`).join('') || none}</div>
   <div id="tgPerson" class="box" hidden>${depts.map(d => `<div class="grp"><b>${esc(d)}</b>${A.members.filter(m => m.dept === d).map(m => `<label class="chk"><input type="checkbox" class="pchk" value="${esc(m.id)}" ${t.target === 'person' && t.targetIds.includes(m.id) ? 'checked' : ''}>${esc(m.name)}</label>`).join('')}</div>`).join('') || none}</div>
   <div class="two"><button class="btn ghost" data-act="mClose">닫기</button><button class="btn" data-act="saveT" data-id="${esc(t.id)}">저장하기</button></div>
@@ -423,10 +429,10 @@ async function delT(el) {
 function tabMem() {
   const depts = topFirst([...new Set(A.members.map(m => m.dept))]);
   $('#ap').innerHTML = `<h2>구성원 <small>${A.members.length}명</small></h2>
-  <div class="box"><label class="fld">과목<input class="in" id="md" maxlength="30" list="dl"><datalist id="dl">${depts.map(d => `<option value="${esc(d)}">`).join('')}</datalist></label>
+  <div class="box"><label class="fld">표시과목<input class="in" id="md" maxlength="30" list="dl"><datalist id="dl">${depts.map(d => `<option value="${esc(d)}">`).join('')}</datalist></label>
   <label class="fld">성명 <small>(여러 명은 줄바꿈이나 쉼표로 구분)</small><textarea class="in" id="mn" rows="3"></textarea></label>
   <button class="btn sm" data-act="addM">구성원 추가</button></div>
-  <div class="box"><b>엑셀로 일괄 등록</b><p class="mute">A열 과목, B열 성명으로 적어 올려 주세요. 첫 줄이 ‘과목·성명’(또는 ‘부서·성명’)이면 제목으로 보고 건너뛰어요. CSV는 UTF-8로 저장해 주세요.</p>
+  <div class="box"><b>엑셀로 일괄 등록</b><p class="mute">A열 표시과목, B열 성명으로 적어 올려 주세요. 첫 줄이 ‘표시과목·성명’(또는 ‘과목·성명’, ‘부서·성명’)이면 제목으로 보고 건너뛰어요. CSV는 UTF-8로 저장해 주세요.</p>
   <div class="arow" style="justify-content:flex-start"><label class="btn sm ghost">파일 선택<input type="file" accept=".xlsx,.xls,.csv" data-chg="xlsx" hidden></label><button class="btn sm ghost" data-act="tpl">엑셀 양식 받기</button></div></div>
   ${depts.map(d => `<div class="grp"><b>${esc(d)}</b><div class="chips">${A.members.filter(m => m.dept === d).map(m => `<span class="chip">${esc(m.name)}<button data-act="delM" data-id="${esc(m.id)}" aria-label="${esc(m.name)} 삭제">×</button></span>`).join('')}</div></div>`).join('') || '<p class="empty">아직 구성원이 없어요.</p>'}`;
 }
@@ -439,7 +445,7 @@ async function addList(list) {
 function addM() {
   const dept = $('#md').value.trim();
   const list = $('#mn').value.split(/[\n,]+/).map(s => s.trim()).filter(Boolean).map(name => ({ dept, name }));
-  if (!dept) return toast('과목을 입력해 주세요.');
+  if (!dept) return toast('표시과목을 입력해 주세요.');
   addList(list);
 }
 async function xlsx(el) {
@@ -449,7 +455,7 @@ async function xlsx(el) {
     const wb = XLSX.read(await f.arrayBuffer(), { type: 'array' });
     const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1, defval: '' });
     let list = rows.map(r => ({ dept: String(r[0]).trim(), name: String(r[1]).trim() })).filter(x => x.dept && x.name);
-    if (list.length && /^(부서|과목|담당과목)$/.test(list[0].dept) && list[0].name === '성명') list.shift();
+    if (list.length && /^(부서|과목|표시과목|담당과목)$/.test(list[0].dept) && list[0].name === '성명') list.shift();
     if (list.length && confirm(`${list.length}명을 등록할까요? (이미 있는 사람은 건너뛰어요)`)) addList(list);
     else if (!list.length) toast('읽을 수 있는 구성원이 없어요.');
   } catch (e) { toast('파일을 읽지 못했어요.'); }
@@ -458,7 +464,7 @@ async function xlsx(el) {
 function tpl() {
   if (typeof XLSX === 'undefined') return toast('엑셀 도구를 불러오지 못했어요.');
   const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([['과목', '성명'], ['교무부', '홍길동'], ['교무부', '김철수'], ['행정실', '이영희']]), '구성원');
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([['표시과목', '성명'], ['교무부', '홍길동'], ['교무부', '김철수'], ['행정실', '이영희']]), '구성원');
   XLSX.writeFile(wb, '구성원_양식.xlsx');
 }
 async function delM(el) {
@@ -496,16 +502,19 @@ function printOpt() {
   <div class="fld">서명률 표시${seg('pr', [['1', '포함'], ['0', '미포함']], '1')}</div>
   <div class="two"><button class="btn ghost" data-act="mClose">취소</button><button class="btn" data-act="printPrev">미리보기</button></div>`);
 }
+const ICON = d => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+const IC_CAL = ICON('<rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/>');
+const IC_PIN = ICON('<path d="M12 21s6.5-5.6 6.5-11a6.5 6.5 0 10-13 0C5.5 15.4 12 21 12 21z"/><circle cx="12" cy="10" r="2.4"/>');
 function printPrev() {
   const t = A.trainings.find(x => x.id === sigT);
   const cols = +$('input[name=pc]:checked').value, rate = $('input[name=pr]:checked').value === '1';
   const by = new Map(A.cur.map(s => [s.memberId, s]));
   const ms = nameSort(A.members.filter(m => t.ids.includes(m.id)));
   const done = ms.filter(m => by.has(m.id)).length;
-  const R = cols === 3 ? 21 : 20; // 세로줄 하나에 들어가는 줄 수
+  const R = cols === 3 ? 20 : 19; // 세로줄 하나에 들어가는 줄 수
   const pages = [];
   for (let i = 0; i < Math.max(ms.length, 1); i += R * cols) pages.push({ start: i, items: ms.slice(i, i + R * cols) });
-  const head = '<th class="n">번호</th><th class="m">성명</th><th class="d">과목</th><th>서명</th>'.repeat(cols);
+  const head = '<th class="n">번호</th><th class="m">성명</th><th class="d">표시과목</th><th>서명</th>'.repeat(cols);
   const when = `${kd(t.date)}${t.from || t.to ? ` ${t.from}~${t.to}` : ''}`;
   const stat = rate ? `대상 ${ms.length}명 · 서명 ${done}명 (${ms.length ? Math.round(done / ms.length * 100) : 0}%)` : '';
   const html = pages.map((pg, pi) => {
@@ -516,12 +525,12 @@ function printPrev() {
         const m = pg.items[c * R + r];
         if (!m) { body += '<td></td><td></td><td></td><td></td>'; continue; }
         const s = by.get(m.id);
-        body += `<td class="n">${pg.start + c * R + r + 1}</td><td class="m">${esc(m.name)}</td><td class="d${m.dept.length > 4 ? ' long' : ''}">${esc(m.dept)}</td><td class="sg">${s ? `<img src="${esc(s.img)}" alt="">` : ''}</td>`;
+        body += `<td class="n">${pg.start + c * R + r + 1}</td><td class="m">${esc(m.name)}</td><td class="d${m.dept.length > (cols === 3 ? 5 : 7) ? ' long' : ''}">${esc(m.dept)}</td><td class="sg">${s ? `<img src="${esc(s.img)}" alt="">` : ''}</td>`;
       }
       body += '</tr>';
     }
     return `<section class="page"><div class="ph"><h2>${esc(t.name)} 서명등록부</h2></div>
-    <div class="info"><div class="l">${esc(stat)}</div><div class="r">일시: ${esc(when)}${t.place ? `<br>장소: ${esc(t.place)}` : ''}</div></div>
+    <div class="info"><div class="l">${esc(stat)}</div><div class="r"><div class="kv"><span class="k">${IC_CAL}일시</span><span>${esc(when)}</span></div>${t.place ? `<div class="kv"><span class="k">${IC_PIN}장소</span><span>${esc(t.place)}</span></div>` : ''}</div></div>
     <table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>
     <div class="pf"><span class="sch"><img src="${LOGO}" alt="">${esc(A.cfg.org)}</span><span class="pn">${pi + 1} / ${pages.length}</span></div></section>`;
   }).join('');
