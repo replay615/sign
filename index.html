@@ -126,7 +126,14 @@ input[type=color]{display:block;margin-top:6px;width:64px;height:40px;border:1px
 .apage{padding-bottom:60px}
 #admin{position:fixed;inset:0;background:var(--bg);overflow:auto;z-index:20}
 .qrbox{display:grid;place-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px;margin-bottom:14px}
+#qr{background:#fff;padding:16px;line-height:0}
 #qr img,#qr canvas{display:block}
+.big{position:fixed;inset:0;background:#fff;z-index:90;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2vmin;text-align:center;padding:3vmin}
+.big .t{font-size:clamp(18px,4vmin,40px);font-weight:800}
+.big .s{font-size:clamp(14px,2.6vmin,26px);color:#444}
+#bq{background:#fff;padding:4vmin;line-height:0}
+#bq img,#bq canvas{display:block}
+.two+.two{margin-top:10px}
 .mask{position:fixed;inset:0;background:rgba(15,25,30,.5);display:flex;align-items:flex-end;justify-content:center;z-index:50}
 .modal{background:#fff;width:100%;max-width:520px;max-height:92vh;overflow:auto;padding:20px 20px calc(20px + env(safe-area-inset-bottom));border-radius:16px 16px 0 0}
 .modal.wide{max-width:900px}
@@ -157,12 +164,10 @@ input[type=color]{display:block;margin-top:6px;width:64px;height:40px;border:1px
 .sheet th,.sheet td{border:.3mm solid #000;padding:0 1mm;height:var(--rh);font-size:10pt;text-align:center;overflow:hidden;line-height:1.15}
 .sheet th{height:8mm;background:#eee;font-weight:600}
 .sheet .n{width:8mm;font-size:8.5pt;color:#444}
-.sheet .m{width:28mm}.sheet .d{width:50mm;white-space:nowrap}
-.sheet td.d.long{font-size:8pt;letter-spacing:-.02em}
-.sheet.cols2 .m{width:18mm}.sheet.cols2 .d{width:32mm}
+.sheet .m{width:28mm}.sheet .d{width:var(--dw,32mm);white-space:nowrap}
+.sheet.cols2 .m{width:18mm}
 .sheet th.n{white-space:nowrap;font-size:8pt;padding:0}
-.sheet.cols3 .n{width:8.5mm}.sheet.cols3 .m{width:14mm}.sheet.cols3 .d{width:24mm}
-.sheet.cols3 td.d.long{font-size:7.5pt}
+.sheet.cols3 .n{width:8.5mm}.sheet.cols3 .m{width:14mm}
 .sheet.cols3 td{font-size:9pt}
 .sheet .sg img{max-width:100%;max-height:8.5mm;display:block;margin:0 auto}
 .sheet td.rs{font-size:10pt;font-weight:600;color:#222}
@@ -405,7 +410,7 @@ async function loadA() {
 const refresh = async () => { if (await loadA()) renderAdmin(); };
 function renderAdmin() {
   const tabs = [['trn', '연수'], ['mem', '구성원'], ['sig', '서명 현황'], ['qr', '공유 QR'], ['cfg', '설정']];
-  $('#admin').innerHTML = `<div class="abar"><div class="wrap wide"><div class="arow"><b>관리자 <small>(화면 v24 · 서버 ${A.ver ? 'v' + A.ver : '구버전 — 새 버전 배포 필요'})</small></b><button class="lnk" data-act="adminClose">닫기</button></div><nav class="tabs">${tabs.map(([k, n]) => `<button class="${k === aTab ? 'on' : ''}" data-act="tab" data-k="${k}">${n}</button>`).join('')}</nav></div></div>
+  $('#admin').innerHTML = `<div class="abar"><div class="wrap wide"><div class="arow"><b>관리자 <small>(화면 v25 · 서버 ${A.ver ? 'v' + A.ver : '구버전 — 새 버전 배포 필요'})</small></b><button class="lnk" data-act="adminClose">닫기</button></div><nav class="tabs">${tabs.map(([k, n]) => `<button class="${k === aTab ? 'on' : ''}" data-act="tab" data-k="${k}">${n}</button>`).join('')}</nav></div></div>
   <div class="wrap wide apage">${A.defaultPin ? '<div class="warn">기본 비밀번호(1234)를 쓰고 있어요. 설정 탭에서 바로 바꿔 주세요.</div>' : ''}<div id="ap"></div></div>`;
   ({ trn: tabTrn, mem: tabMem, sig: tabSig, qr: tabQr, cfg: tabCfg })[aTab]();
 }
@@ -584,7 +589,7 @@ function printPrev() {
         const m = pg.items[c * R + r];
         if (!m) { body += '<td></td><td></td><td></td><td></td>'; continue; }
         const s = by.get(m.id);
-        body += `<td class="n">${pg.start + c * R + r + 1}</td><td class="m">${esc(m.name)}</td><td class="d${m.dept.length > (cols === 3 ? 5 : 7) ? ' long' : ''}">${esc(m.dept)}</td>${s ? `<td class="sg"><img src="${esc(s.img)}" alt=""></td>` : rsn.has(m.id) ? `<td class="sg rs">${esc(rsn.get(m.id))}</td>` : '<td class="sg"></td>'}`;
+        body += `<td class="n">${pg.start + c * R + r + 1}</td><td class="m">${esc(m.name)}</td><td class="d">${esc(m.dept)}</td>${s ? `<td class="sg"><img src="${esc(s.img)}" alt=""></td>` : rsn.has(m.id) ? `<td class="sg rs">${esc(rsn.get(m.id))}</td>` : '<td class="sg"></td>'}`;
       }
       body += '</tr>';
     }
@@ -593,7 +598,10 @@ function printPrev() {
     <table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>
     <div class="pf"><span class="sch"><img src="${LOGO}" alt="">${esc(A.cfg.org)}</span><span class="pn">${pi + 1} / ${pages.length}</span></div></section>`;
   }).join('');
-  lastSheet = `<div class="sheet cols${cols}">${html}</div>`;
+  // 표시과목 칸 너비 = 가장 긴 과목명에 딱 맞게 (남는 공간은 서명 칸이 써요)
+  const em = (cols === 3 ? 9 : 10) * 0.3528, wch = c => /[\u3131-\uD7A3\u4E00-\u9FFF]/.test(c) ? 1 : (c === '·' || c === ' ' ? 0.5 : 0.62);
+  const dmm = Math.ceil((Math.max(4.2, ...ms.map(m => [...m.dept].reduce((s, c) => s + wch(c), 0))) * em + 4.5) * 2) / 2;
+  lastSheet = `<div class="sheet cols${cols}" style="--dw:${dmm}mm">${html}</div>`;
   const z = Math.min(1, (innerWidth - 56) / 800);
   modal(`<h3>서명등록부 미리보기</h3><div class="prev"><div style="zoom:${z}">${lastSheet}</div></div>
   <div class="two"><button class="btn ghost" data-act="mClose">닫기</button><button class="btn" data-act="printNow">인쇄하기 / PDF 저장</button></div>`, true);
@@ -609,7 +617,9 @@ function tabQr() {
   const url = qrUrl(), daily = A.cfg.qrMode === 'daily';
   $('#ap').innerHTML = `<h2>공유 QR</h2><p class="mute">${daily ? '매일 자정에 새 QR로 바뀌어요. 연수 당일 아침 이 화면에서 새 QR을 공유해 주세요.' : '항상 같은 QR이에요. 대리 서명이 걱정되면 설정에서 ‘매일 바뀌는 QR’을 선택해 주세요.'}${DEMO ? ' (데모 모드의 링크는 이 브라우저에서만 쓸 수 있어요.)' : ''}</p>
   <div class="qrbox"><div id="qr"></div></div><input class="in" id="lk" readonly value="${esc(url)}" style="margin:0 0 4px">
-  <div class="two"><button class="btn ghost" data-act="cpLink">링크 복사</button><button class="btn" data-act="saveQr">이미지 저장</button></div>`;
+  <div class="two"><button class="btn ghost" data-act="cpLink">링크 복사</button><button class="btn" data-act="saveQr">QR 이미지 저장</button></div>
+  <div class="two"><button class="btn ghost" data-act="saveCard">안내 카드 저장</button><button class="btn ghost" data-act="bigQr">화면에 크게 띄우기</button></div>
+  <p class="mute" style="margin-top:12px">저장한 이미지는 흰 여백이 포함돼 있어요. 자료에 넣을 때 <b>화면 가장자리까지 꽉 채우지 말고</b> 여백을 남겨 주세요.</p>`;
   if (typeof QRCode === 'undefined') $('#qr').textContent = 'QR 도구를 불러오지 못했어요. 링크를 복사해서 공유해 주세요.';
   else new QRCode($('#qr'), { text: url, width: 260, height: 260, correctLevel: QRCode.CorrectLevel.M });
 }
@@ -618,10 +628,52 @@ async function cpLink() {
   try { await navigator.clipboard.writeText(v); } catch (e) { $('#lk').select(); document.execCommand('copy'); }
   toast('링크를 복사했어요.');
 }
+const download = (url, name) => { const a = document.createElement('a'); a.href = url; a.download = name; a.click(); };
+function qrCanvas(size) { // 화면에 보이지 않는 곳에서 큰 QR을 만들어요
+  const box = document.createElement('div');
+  new QRCode(box, { text: qrUrl(), width: size, height: size, correctLevel: QRCode.CorrectLevel.M });
+  return box.querySelector('canvas');
+}
+function loadImg(src) { return new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; }); }
+/* 이미지 저장: 흰 여백(조용한 영역)을 충분히 둬서 화면 가득 채워도 휴대폰이 인식해요 */
 function saveQr() {
-  const c = $('#qr canvas'), i = $('#qr img'), src = c ? c.toDataURL('image/png') : i && i.src;
-  if (!src) return toast('QR 이미지를 만들지 못했어요.');
-  const a = document.createElement('a'); a.href = src; a.download = '연수서명_QR.png'; a.click();
+  if (typeof QRCode === 'undefined') return toast('QR 도구를 불러오지 못했어요.');
+  const S = 900, M = 200, c = document.createElement('canvas'); c.width = c.height = S + 2 * M;
+  const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height);
+  g.imageSmoothingEnabled = false; g.drawImage(qrCanvas(S), M, M, S, S);
+  download(c.toDataURL('image/png'), '연수서명_QR.png');
+}
+/* 안내 카드: 학교 로고·이름 + QR + 안내 문구 (자료에 넣거나 인쇄해서 붙이기 좋아요) */
+async function saveCard() {
+  if (typeof QRCode === 'undefined') return toast('QR 도구를 불러오지 못했어요.');
+  const W = 1200, H = 1650, c = document.createElement('canvas'); c.width = W; c.height = H;
+  const g = c.getContext('2d'), brand = getComputedStyle(document.documentElement).getPropertyValue('--brand').trim() || '#1d4e5f';
+  g.fillStyle = '#fff'; g.fillRect(0, 0, W, H);
+  g.fillStyle = brand; g.fillRect(0, 0, W, 240);
+  g.textAlign = 'center'; g.textBaseline = 'middle';
+  const org = (A && A.cfg && A.cfg.org) || '연수 전자서명', font = '"Pretendard","Apple SD Gothic Neo","Malgun Gothic",sans-serif';
+  try {
+    const logo = await loadImg(LOGO), lh = 130, lw = logo.width * lh / logo.height;
+    g.font = `800 72px ${font}`; const tw = g.measureText(org).width, gap = 36, x0 = (W - (lw + gap + tw)) / 2;
+    g.drawImage(logo, x0, 55, lw, lh); g.fillStyle = '#fff'; g.textAlign = 'left'; g.fillText(org, x0 + lw + gap, 122);
+  } catch (e) { g.fillStyle = '#fff'; g.font = `800 72px ${font}`; g.fillText(org, W / 2, 122); }
+  g.textAlign = 'center'; g.fillStyle = '#17212b'; g.font = `800 84px ${font}`; g.fillText('연수 전자서명', W / 2, 345);
+  const S = 760, M = 110, X = (W - S) / 2, Y = 530;
+  g.fillStyle = '#fff'; g.fillRect(X - M, Y - M, S + 2 * M, S + 2 * M); // QR 둘레 흰 여백(인식에 꼭 필요해요)
+  g.strokeStyle = '#d5dbd8'; g.lineWidth = 4; g.strokeRect(X - M, Y - M, S + 2 * M, S + 2 * M);
+  g.imageSmoothingEnabled = false; g.drawImage(qrCanvas(S), X, Y, S, S);
+  g.fillStyle = '#17212b'; g.font = `700 52px ${font}`; g.fillText('휴대폰 카메라로 QR을 찍고', W / 2, 1480);
+  g.fillText('서명해 주세요', W / 2, 1552);
+  download(c.toDataURL('image/png'), '연수서명_안내카드.png');
+}
+/* 화면에 크게 띄우기 (연수장 스크린용) */
+function bigQr() {
+  if (typeof QRCode === 'undefined') return toast('QR 도구를 불러오지 못했어요.');
+  const org = (A && A.cfg && A.cfg.org) || '', size = Math.floor(Math.min(innerWidth, innerHeight * 0.72) * 0.72);
+  const el = document.createElement('div'); el.className = 'big'; el.id = 'big';
+  el.innerHTML = `<div class="t">${esc(org)} 연수 전자서명</div><div id="bq"></div><div class="s">휴대폰 카메라로 QR을 찍고 서명해 주세요 · 화면을 누르면 닫혀요</div>`;
+  el.addEventListener('click', () => el.remove()); document.body.appendChild(el);
+  new QRCode($('#bq'), { text: qrUrl(), width: size, height: size, correctLevel: QRCode.CorrectLevel.M });
 }
 function tabCfg() {
   const c = A.cfg;
@@ -676,7 +728,7 @@ const ACT = {
   editT, tgChg, saveT, delT, addM, xlsx, tpl, delM,
   sortM, reasonOpt, rsnSel, saveReasons,
   sigSel(el) { sigT = el.value; tabSig(); }, delS, printOpt, printPrev, printNow,
-  cpLink, saveQr, saveCfg, chPin
+  cpLink, saveQr, saveCard, bigQr, saveCfg, chPin
 };
 document.addEventListener('click', e => { // 휴대폰은 설치된 메일 앱(지메일)으로, 컴퓨터는 지메일 작성 창으로 열어요
   const m = e.target.closest('a.mail');
